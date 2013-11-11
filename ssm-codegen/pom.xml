@@ -6,8 +6,9 @@
 		<groupId>ssm</groupId>
 		<artifactId>ssm-parent</artifactId>
 		<version>1.2.4</version>
-		<relativePath>../parent/</relativePath>
+		<relativePath>../ssm-parent/</relativePath>
 	</parent>
+	
 	<artifactId>ssm-codegen</artifactId>
 	<packaging>jar</packaging>
 

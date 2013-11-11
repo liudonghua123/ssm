@@ -9,9 +9,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>parent</module>
-		<module>core</module>
-		<module>codegen</module>
+		<module>ssm-parent</module>
+		<module>ssm-core</module>
+		<module>ssm-codegen</module>
 	</modules>
 
 	<description>Spring3 + SpringMVC3 + Mybatis3</description>
