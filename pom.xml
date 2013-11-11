@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ssm</groupId>
+	<artifactId>ssm-project</artifactId>
+	<version>1.2.4</version>
+	<name>SSM :: Project</name>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>parent</module>
+		<module>core</module>
+		<module>codegen</module>
+	</modules>
+
+	<description>Spring3 + SpringMVC3 + Mybatis3</description>
+	<url>http://www.github.com/jinqinghua/ssm</url>
+	<inceptionYear>2013</inceptionYear>
+	<organization>
+		<name>kimsoft</name>
+		<url>http://www.github.com/jinqinghua/</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>jinqinghua</id>
+			<name>jinqinghua</name>
+			<email>jinqinghua at gmail.com</email>
+			<roles>
+				<role>Project leader</role>
+			</roles>
+			<timezone>+8</timezone>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/jinqinghua/ssm/issues</url>
+	</issueManagement>
+
+	<scm>
+		<url>https://github.com/jinqinghua/ssm</url>
+		<connection>scm:git:git://github.com/jinqinghua/ssm.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:jinqinghua/ssm.git</developerConnection>
+	</scm>
+</project>
