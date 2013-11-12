@@ -8,7 +8,7 @@
 		<version>1.2.4</version>
 		<relativePath>../ssm-parent/</relativePath>
 	</parent>
-	
+
 	<artifactId>ssm-codegen</artifactId>
 	<packaging>jar</packaging>
 
@@ -53,13 +53,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.0</version>
 				<configuration>
 					<transformers>
 						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 							<manifestEntries>
-								<Main-Class><!--ssm.codegen.CodeGenerator -->
-								</Main-Class>
+								<Main-Class>ssm.codegen.CodeGenerator</Main-Class>
 								<X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
 								<X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
 							</manifestEntries>
