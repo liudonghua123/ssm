@@ -6,7 +6,7 @@
 		<groupId>ssm</groupId>
 		<artifactId>ssm-parent</artifactId>
 		<version>1.2.4</version>
-		<relativePath>../ssm-parent/</relativePath>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>ssm-codegen</artifactId>
@@ -47,12 +47,6 @@
 								<X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
 								<X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
 							</manifestEntries>
-						</transformer>
-						<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-							<resource>META-INF/spring.handlers</resource>
-						</transformer>
-						<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-							<resource>META-INF/spring.schemas</resource>
 						</transformer>
 					</transformers>
 				</configuration>

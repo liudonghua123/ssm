@@ -6,7 +6,7 @@
 		<groupId>ssm</groupId>
 		<artifactId>ssm-parent</artifactId>
 		<version>1.2.4</version>
-		<relativePath>../ssm-parent/</relativePath>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>ssm-core</artifactId>
@@ -15,7 +15,6 @@
 	<name>ssm-core</name>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
