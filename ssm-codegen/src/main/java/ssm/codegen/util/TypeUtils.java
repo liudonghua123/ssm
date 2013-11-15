@@ -4,193 +4,192 @@ import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.Date;
 
-import ssm.codegen.domain.MyTypes;
+import ssm.codegen.domain.MyType;
 
 public class TypeUtils {
 
-	public static final MyTypes getTypes(int type, int columnSize, int decimalDigits) {
-		MyTypes mts = new MyTypes();
-		switch (type) {
+	public static final MyType getType(int dataType, int columnSize, int decimalDigits) {
+		MyType type = new MyType();
+		switch (dataType) {
 		case Types.ARRAY:
-			mts.setJdbcTypeName("ARRAY");
-			mts.setJavaClassName(Object.class.getName());
+			type.setJdbcTypeName("ARRAY");
+			type.setJavaClassName(Object.class.getName());
 			break;
 
 		case Types.BIGINT:
-			mts.setJdbcTypeName("BIGINT");
-			mts.setJavaClassName(Long.class.getName());
+			type.setJdbcTypeName("BIGINT");
+			type.setJavaClassName(Long.class.getName());
 			break;
 
 		case Types.BINARY:
-			mts.setJdbcTypeName("BINARY");
-			mts.setJavaClassName("byte[]");
+			type.setJdbcTypeName("BINARY");
+			type.setJavaClassName("byte[]");
 			break;
 
 		case Types.BIT:
-			mts.setJdbcTypeName("BIT");
-			mts.setJavaClassName(Boolean.class.getName());
+			type.setJdbcTypeName("BIT");
+			type.setJavaClassName(Boolean.class.getName());
 			break;
 
 		case Types.BLOB:
-			mts.setJdbcTypeName("BLOB");
-			mts.setJavaClassName("byte[]");
+			type.setJdbcTypeName("BLOB");
+			type.setJavaClassName("byte[]");
 			break;
 
 		case Types.BOOLEAN:
-			mts.setJdbcTypeName("BOOLEAN");
-			mts.setJavaClassName(Boolean.class.getName());
+			type.setJdbcTypeName("BOOLEAN");
+			type.setJavaClassName(Boolean.class.getName());
 			break;
 
 		case Types.CHAR:
-			mts.setJdbcTypeName("CHAR");
-			mts.setJavaClassName(String.class.getName());
+			type.setJdbcTypeName("CHAR");
+			type.setJavaClassName(String.class.getName());
 			break;
 
 		case Types.CLOB:
-			mts.setJdbcTypeName("CLOB");
-			mts.setJavaClassName(String.class.getName());
+			type.setJdbcTypeName("CLOB");
+			type.setJavaClassName(String.class.getName());
 			break;
 
 		case Types.DATALINK:
-			mts.setJdbcTypeName("DATALINK");
-			mts.setJavaClassName(Object.class.getName());
+			type.setJdbcTypeName("DATALINK");
+			type.setJavaClassName(Object.class.getName());
 			break;
 
 		case Types.DATE:
-			mts.setJdbcTypeName("DATE");
-			mts.setJavaClassName(Date.class.getName());
+			type.setJdbcTypeName("DATE");
+			type.setJavaClassName(Date.class.getName());
 			break;
 
 		/*
 		 * @see http://blog.csdn.net/kimsoft/article/details/8824448
 		 */
 		case Types.DECIMAL:
-			mts.setJdbcTypeName("DECIMAL");
+			type.setJdbcTypeName("DECIMAL");
 			if (decimalDigits > 0 || columnSize > 20) {
-				mts.setJavaClassName(BigDecimal.class.getName());
+				type.setJavaClassName(BigDecimal.class.getName());
 			} else if (columnSize > 10) {
-				mts.setJavaClassName(Long.class.getName());
+				type.setJavaClassName(Long.class.getName());
 				// } else if (columnSize > 4) {
-				// mts.setJavaClassName(Integer.class.getName());
+				// type.setJavaClassName(Integer.class.getName());
 				// } else {
-				// mts.setJavaClassName(Short.class.getName());
+				// type.setJavaClassName(Short.class.getName());
 				// }
 			} else {
-				mts.setJavaClassName(Integer.class.getName());
+				type.setJavaClassName(Integer.class.getName());
 			}
 			break;
 
 		case Types.DISTINCT:
-			mts.setJdbcTypeName("DISTINCT");
-			mts.setJavaClassName(Object.class.getName());
+			type.setJdbcTypeName("DISTINCT");
+			type.setJavaClassName(Object.class.getName());
 			break;
 
 		case Types.DOUBLE:
-			mts.setJdbcTypeName("DOUBLE");
-			mts.setJavaClassName(Double.class.getName());
+			type.setJdbcTypeName("DOUBLE");
+			type.setJavaClassName(Double.class.getName());
 			break;
 
 		case Types.FLOAT:
-			mts.setJdbcTypeName("FLOAT");
-			mts.setJavaClassName(Double.class.getName());
+			type.setJdbcTypeName("FLOAT");
+			type.setJavaClassName(Double.class.getName());
 			break;
 
 		case Types.INTEGER:
-			mts.setJdbcTypeName("INTEGER");
-			mts.setJavaClassName(Integer.class.getName());
+			type.setJdbcTypeName("INTEGER");
+			type.setJavaClassName(Integer.class.getName());
 			break;
 
 		case Types.JAVA_OBJECT:
-			mts.setJdbcTypeName("JAVA_OBJECT");
-			mts.setJavaClassName(Object.class.getName());
+			type.setJdbcTypeName("JAVA_OBJECT");
+			type.setJavaClassName(Object.class.getName());
 			break;
 
 		case Types.LONGVARBINARY:
-			mts.setJdbcTypeName("LONGVARBINARY");
-			mts.setJavaClassName("byte[]");
+			type.setJdbcTypeName("LONGVARBINARY");
+			type.setJavaClassName("byte[]");
 			break;
 
 		case Types.LONGVARCHAR:
-			mts.setJdbcTypeName("LONGVARCHAR");
-			mts.setJavaClassName(String.class.getName());
+			type.setJdbcTypeName("LONGVARCHAR");
+			type.setJavaClassName(String.class.getName());
 			break;
 
 		case Types.NULL:
-			mts.setJdbcTypeName("NULL");
-			mts.setJavaClassName(Object.class.getName());
+			type.setJdbcTypeName("NULL");
+			type.setJavaClassName(Object.class.getName());
 			break;
 
 		case Types.NUMERIC:
-			mts.setJdbcTypeName("NUMERIC");
+			type.setJdbcTypeName("NUMERIC");
 			if (decimalDigits > 0 || columnSize > 20) {
-				mts.setJavaClassName(BigDecimal.class.getName());
+				type.setJavaClassName(BigDecimal.class.getName());
 			} else if (columnSize > 10) {
-				mts.setJavaClassName(Long.class.getName());
+				type.setJavaClassName(Long.class.getName());
 				// } else if (columnSize > 4) {
-				// mts.setJavaClassName(Integer.class.getName());
+				// type.setJavaClassName(Integer.class.getName());
 				// } else {
-				// mts.setJavaClassName(Short.class.getName());
+				// type.setJavaClassName(Short.class.getName());
 				// }
 			} else {
-				mts.setJavaClassName(Integer.class.getName());
+				type.setJavaClassName(Integer.class.getName());
 			}
 			break;
 
 		case Types.OTHER:
-			mts.setJdbcTypeName("OTHER");
-			mts.setJavaClassName(Object.class.getName());
+			type.setJdbcTypeName("OTHER");
+			type.setJavaClassName(Object.class.getName());
 			break;
 
 		case Types.REAL:
-			mts.setJdbcTypeName("REAL");
-			mts.setJavaClassName(Float.class.getName());
+			type.setJdbcTypeName("REAL");
+			type.setJavaClassName(Float.class.getName());
 			break;
 
 		case Types.REF:
-			mts.setJdbcTypeName("REF");
-			mts.setJavaClassName(Object.class.getName());
+			type.setJdbcTypeName("REF");
+			type.setJavaClassName(Object.class.getName());
 			break;
 
 		case Types.SMALLINT:
-			mts.setJdbcTypeName("SMALLINT");
-			mts.setJavaClassName(Short.class.getName());
+			type.setJdbcTypeName("SMALLINT");
+			type.setJavaClassName(Short.class.getName());
 			break;
 
 		case Types.STRUCT:
-			mts.setJdbcTypeName("STRUCT");
-			mts.setJavaClassName(Object.class.getName());
+			type.setJdbcTypeName("STRUCT");
+			type.setJavaClassName(Object.class.getName());
 			break;
 
 		case Types.TIME:
-			mts.setJdbcTypeName("TIME");
-			mts.setJavaClassName(Date.class.getName());
+			type.setJdbcTypeName("TIME");
+			type.setJavaClassName(Date.class.getName());
 			break;
 
 		case Types.TIMESTAMP:
-			mts.setJdbcTypeName("TIMESTAMP");
-			mts.setJavaClassName(Date.class.getName());
+			type.setJdbcTypeName("TIMESTAMP");
+			type.setJavaClassName(Date.class.getName());
 			break;
 
 		case Types.TINYINT:
-			mts.setJdbcTypeName("TINYINT");
-			mts.setJavaClassName(Byte.class.getName());
+			type.setJdbcTypeName("TINYINT");
+			type.setJavaClassName(Byte.class.getName());
 			break;
 
 		case Types.VARBINARY:
-			mts.setJdbcTypeName("VARBINARY");
-			mts.setJavaClassName("byte[]");
+			type.setJdbcTypeName("VARBINARY");
+			type.setJavaClassName("byte[]");
 			break;
 
 		case Types.VARCHAR:
-			mts.setJdbcTypeName("VARCHAR");
-			mts.setJavaClassName(String.class.getName());
+			type.setJdbcTypeName("VARCHAR");
+			type.setJavaClassName(String.class.getName());
 			break;
 
 		default:
 			return null;
 			// throw new UnsupportedDataTypeException();
 		}
-		return mts;
+		return type;
 	}
-
 }

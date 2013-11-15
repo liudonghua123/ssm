@@ -2,11 +2,11 @@ package ssm.codegen.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -39,7 +39,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	@Resource(name = "codeGeneratorConfig")
 	private CodeGeneratorConfig cfg;
 
-	private Map<String, Object> model;
+	private static Map<String, Object> model;
 
 	public CodeGeneratorServiceImpl() {
 	}
@@ -68,11 +68,13 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		model.put("ssmPackageName", cfg.getSsmPackageName());
 
 		model.put("baseDomainClassName", cfg.getBaseDomainClassName());
+		
+		model.put("tables", databaseMetaDataDao.selectTables());
 	}
 
 	private void generateFile(File file, String context, boolean overwrite) throws IOException {
 		if (!overwrite && file.exists()) {
-			logger.warn("the file [{}] is already exists!", file.getAbsolutePath());
+			logger.warn("The file [{}] is already exists!", file.getAbsolutePath());
 			return;
 		}
 		FileUtils.writeStringToFile(file, context);
@@ -87,15 +89,15 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateMyBatisConfigFile(boolean isIncludeAllTables) throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList(isIncludeAllTables);
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames(isIncludeAllTables);
+		model.put("tableNames", tableNames);
 
-		List<String> domainClassNameList = new ArrayList<String>();
-		for (String tableName : tableNameList) {
+		Set<String> domainClassNames = new HashSet<String>();
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
-			domainClassNameList.add(domainClassName);
+			domainClassNames.add(domainClassName);
 		}
-		model.put("domainClassNameList", domainClassNameList);
+		model.put("domainClassNames", domainClassNames);
 
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString("mybatis-config.xml.ftl"), model);
 		this.generateFile(new File(cfg.getProjectSourcePath(), "mybatis-config.xml"), content, true);
@@ -105,14 +107,14 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateDomainFiles() throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList();
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames();
+		model.put("tableNames", tableNames);
 
-		for (String tableName : tableNameList) {
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
 			model.put("domainClassName", domainClassName);
 
-			List<Map<String, Object>> columnList = databaseMetaDataDao.selectColumnNameList(tableName);
+			Set<Map<String, Object>> columnList = databaseMetaDataDao.selectColumnNames(tableName);
 			model.put("columnList", columnList);
 
 			String content = templateService.getContent(cfg.getDbmsFtlFilePathString("/Xxx.java.ftl"), model);
@@ -125,10 +127,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateDaoFiles() throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList();
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames();
+		model.put("tableNames", tableNames);
 
-		for (String tableName : tableNameList) {
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
 			model.put("domainClassName", domainClassName);
 
@@ -143,10 +145,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateDaoSqlSessionImplFiles() throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList();
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames();
+		model.put("tableNames", tableNames);
 
-		for (String tableName : tableNameList) {
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
 			model.put("domainClassName", domainClassName);
 
@@ -163,16 +165,16 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateDaoJdbcImplFiles() throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList();
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames();
+		model.put("tableNames", tableNames);
 
-		for (String tableName : tableNameList) {
+		for (String tableName : tableNames) {
 			model.put("tableName", tableName);
 
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
 			model.put("domainClassName", domainClassName);
 
-			List<Map<String, Object>> columnList = databaseMetaDataDao.selectColumnNameList(tableName);
+			Set<Map<String, Object>> columnList = databaseMetaDataDao.selectColumnNames(tableName);
 			model.put("columnList", columnList);
 
 			String content = templateService.getContent(cfg.getDbmsFtlFilePathString("XxxDaoJdbcImpl.java.ftl"), model);
@@ -192,15 +194,15 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateFacadeFile(boolean isIncludeAllTables) throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList(isIncludeAllTables);
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames(isIncludeAllTables);
+		model.put("tableNames", tableNames);
 
-		List<String> domainClassNameList = new ArrayList<String>();
-		for (String tableName : tableNameList) {
+		Set<String> domainClassNames = new HashSet<String>();
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
-			domainClassNameList.add(domainClassName);
+			domainClassNames.add(domainClassName);
 		}
-		model.put("domainClassNameList", domainClassNameList);
+		model.put("domainClassNames", domainClassNames);
 
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString("Facade.java.ftl"), model);
 
@@ -216,15 +218,15 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateFacadeImplFile(boolean isIncludeAllTables) throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList(isIncludeAllTables);
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames(isIncludeAllTables);
+		model.put("tableNames", tableNames);
 
-		List<String> domainClassNameList = new ArrayList<String>();
-		for (String tableName : tableNameList) {
+		Set<String> domainClassNames = new HashSet<String>();
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
-			domainClassNameList.add(domainClassName);
+			domainClassNames.add(domainClassName);
 		}
-		model.put("domainClassNameList", domainClassNameList);
+		model.put("domainClassNames", domainClassNames);
 
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString("FacadeImpl.java.ftl"), model);
 
@@ -236,10 +238,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateServiceFiles() throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList();
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames();
+		model.put("tableNames", tableNames);
 
-		for (String tableName : tableNameList) {
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
 			model.put("domainClassName", domainClassName);
 
@@ -255,10 +257,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateServiceImplFiles() throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList();
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames();
+		model.put("tableNames", tableNames);
 
-		for (String tableName : tableNameList) {
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
 			model.put("domainClassName", domainClassName);
 
@@ -275,17 +277,17 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	public void generateDaoMyBatisMapperFiles() throws IOException {
 		this.prepare();
 
-		List<String> tableNameList = databaseMetaDataDao.selectTableNameList();
-		model.put("tableNameList", tableNameList);
+		Set<String> tableNames = databaseMetaDataDao.selectTableNames();
+		model.put("tableNames", tableNames);
 
-		for (String tableName : tableNameList) {
+		for (String tableName : tableNames) {
 			String domainClassName = JavaBeansUtils.getCamelCaseString(tableName, true);
 			model.put("domainClassName", domainClassName);
 
 			model.put("tableName", tableName);
 
-			List<Map<String, Object>> columnList = databaseMetaDataDao.selectColumnNameList(tableName);
-			model.put("columnList", columnList);
+			Set<Map<String, Object>> columns = databaseMetaDataDao.selectColumnNames(tableName);
+			model.put("columnList", columns);
 
 			String content = templateService.getContent(cfg.getDbmsFtlFilePathString("XxxDaoMyBatisMapper.xml.ftl"),
 					model);

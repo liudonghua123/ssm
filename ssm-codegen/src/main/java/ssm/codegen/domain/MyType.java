@@ -1,13 +1,16 @@
 package ssm.codegen.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Jin,QingHua
  * @version build 2008.12
  */
-public class MyTypes {
+public class MyType {
 
 	/**
-	 * java.sql.Types
+	 * 
+	 * java.sql.Types[not use]
 	 */
 	private int jdbcType;
 
@@ -17,16 +20,21 @@ public class MyTypes {
 	private String jdbcTypeName;
 
 	/**
-	 * eg. java.lang.Long
+	 * e.g. java.lang.Long[not use]
 	 */
 	private Class<? extends Object> javaClass;
 
 	/**
-	 * eg. Long
+	 * e.g. java.lang.Long
 	 */
 	private String javaClassName;
 
-	public MyTypes() {
+	/**
+	 * e.g. Long
+	 */
+	private String javaClassSimpleName;
+
+	public MyType() {
 
 	}
 
@@ -62,4 +70,15 @@ public class MyTypes {
 		this.javaClassName = javaClassName;
 	}
 
+	public String getJavaClassSimpleName() {
+		if (null == this.javaClassSimpleName || this.javaClassSimpleName.length() == 0) {
+			return StringUtils.substringAfterLast(this.javaClassName, ".");
+		} else {
+			return javaClassSimpleName;
+		}
+	}
+
+	public void setJavaClassSimpleName(String javaClassSimpleName) {
+		this.javaClassSimpleName = javaClassSimpleName;
+	}
 }

@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -20,11 +20,14 @@ import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import ssm.codegen.config.CodeGeneratorConfig;
 import ssm.codegen.dao.DatabaseMetaDataDao;
-import ssm.codegen.domain.DbType;
-import ssm.codegen.domain.MyTypes;
+import ssm.codegen.domain.Column;
+import ssm.codegen.domain.MyType;
+import ssm.codegen.domain.Table;
+import ssm.codegen.util.JavaBeansUtils;
 import ssm.codegen.util.TypeUtils;
 
 /**
@@ -42,144 +45,94 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 	@Resource(name = "codeGeneratorConfig")
 	private CodeGeneratorConfig cfg;
 
-	private String schemaPattern = null;
-
-	private boolean isAllTables = false;
-
 	@Override
-	public List<String> selectTableNameList() throws DataAccessException {
-		return this.selectTableNameList(false);
+	public Set<String> selectTableNames(boolean isIncludeAllTables) throws DataAccessException {
+		return this.selectTableNames(false);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<String> selectTableNameList(boolean isIncludeAllTables) throws DataAccessException {
-		isAllTables = isIncludeAllTables;
-		return (List<String>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
+	public Set<String> selectTableNames() throws DataAccessException {
+		return (Set<String>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
 			@Override
 			public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
 				DatabaseMetaData dbMetaData = connection.getMetaData();
 				log.debug("{} -> {}", dbMetaData.getDatabaseProductName(), dbMetaData.getDatabaseProductVersion());
 
-				List<String> tableNameList = new ArrayList<String>();
-				String dbmsPorductName = StringUtils.upperCase(cfg.getDbmsPorductName());
-				log.debug("dbmsPorductName:{}", dbmsPorductName);
-				String sql = "";
-				String sqlConditions = isAllTables ? cfg.getTableNameSqlConditions() : "";
-				ResultSet rs = null;
+				SimpleDriverDataSource simpleDriverDataSource = ((SimpleDriverDataSource) dataSource);
+				// MySQL大小写不关注
+				// Oracle必须大写
+				// SQLServer不需要
+				String schemaPattern = simpleDriverDataSource.getUsername().toUpperCase();
+				String url = simpleDriverDataSource.getUrl();
 
-				schemaPattern = ((SimpleDriverDataSource) dataSource).getUsername();
-				log.debug("schemaPattern:{}", schemaPattern);
-
-				switch (DbType.valueOf(dbmsPorductName)) {
-				case MYSQL:
-					sql = String.format(DbType.MYSQL.getSqlGetTableNames(), schemaPattern, sqlConditions);
-					break;
-				case ORACLE:
-					sql = String.format(DbType.ORACLE.getSqlGetTableNames(), schemaPattern, sqlConditions);
-					break;
-				case SQLSERVER:
-					sql = String.format(DbType.SQLSERVER.getSqlGetTableNames(), sqlConditions);
-					break;
-				case DB2:
-					log.warn("not yet implement");
-					break;
-				default:
-					log.warn("not yet implement");
-					break;
+				if (url.toLowerCase().contains("sqlserver")) {
+					schemaPattern = null;
 				}
 
-				log.info("sql:{}", sql);
-				rs = connection.createStatement().executeQuery(sql);
+				ResultSet rst = dbMetaData.getTables(null, schemaPattern, null, new String[] { "TABLE" });
+				Assert.notNull(rst);
 
+				Set<String> tableNames = new HashSet<String>();
 				String tableName = null;
-				if (null == rs) {
-					return null;
-				}
-				while (rs.next()) {
-					tableName = rs.getString("TABLE_NAME").toUpperCase();
-					log.debug("[table]:{}", tableName);
-					tableNameList.add(tableName);
-				}
-				rs.close();
+				while (rst.next()) {
+					log.debug("[TABLE_NAME]:{}", rst.getString("TABLE_NAME"));// 表名
+					log.debug("[TABLE_TYPE]:{}", rst.getString("TABLE_TYPE"));// 表类型，TABLE,VIEW等
+					log.debug("[REMARKS]:{}", rst.getString("REMARKS"));// 注释
 
-				return tableNameList;
+					tableName = rst.getString("TABLE_NAME").toUpperCase();
+					tableNames.add(tableName);
+				}
+				rst.close();
+				connection.close();
+
+				return tableNames;
 			}
 		});
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> selectColumnNameList(final String tableName) throws DataAccessException {
-		return (List<Map<String, Object>>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
+	public Set<Map<String, Object>> selectColumnNames(final String tableName) throws DataAccessException {
+		return (Set<Map<String, Object>>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
 			@Override
 			public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
 				DatabaseMetaData dbMetaData = connection.getMetaData();
-				schemaPattern = ((SimpleDriverDataSource) dataSource).getUsername();
+				String schemaPattern = ((SimpleDriverDataSource) dataSource).getUsername();
 
-				String dbmsPorductName = cfg.getDbmsPorductName();
-				String sqlComments = null;
-
-				Map<String, String> commentsMap = new HashMap<String, String>();
-
-				switch (DbType.valueOf(dbmsPorductName)) {
-				case MYSQL:
-					sqlComments = String.format(DbType.MYSQL.getSqlGetComments(), schemaPattern,
-							cfg.getTableNameSqlConditions());
-					break;
-				case ORACLE:
-					sqlComments = String.format(DbType.ORACLE.getSqlGetComments(), schemaPattern,
-							cfg.getTableNameSqlConditions());
-					break;
-				case SQLSERVER:
-					sqlComments = String.format(DbType.SQLSERVER.getSqlGetComments(), cfg.getTableNameSqlConditions());
-					break;
-				case DB2:
-					sqlComments = String.format(DbType.DB2.getSqlGetComments(), cfg.getTableNameSqlConditions());
-					break;
-				default:
-					log.warn("not yet implement");
-					break;
-				}
-
-				ResultSet rsc = connection.prepareStatement(sqlComments).executeQuery(sqlComments);
-				if (null == rsc) {
-					return null;
-				}
+				ResultSet rsc = dbMetaData.getColumns(null, schemaPattern, tableName, null);
+				Set<Map<String, Object>> set = new HashSet<Map<String, Object>>();
 				while (rsc.next()) {
-					commentsMap.put(rsc.getString("column_name"), rsc.getString("column_comment"));
-				}
-				rsc.close();
+					log.debug("[COLUMN_NAME ]:{}", rsc.getString("COLUMN_NAME"));
+					log.debug("[DATA_TYPE]:{}", rsc.getInt("DATA_TYPE"));
+					log.debug("[TYPE_NAME]:{}", rsc.getString("TYPE_NAME"));
+					log.debug("[COLUMN_SIZE]:{}", rsc.getInt("COLUMN_SIZE"));
+					log.debug("[DECIMAL_DIGITS]:{}", rsc.getInt("DECIMAL_DIGITS"));
+					log.debug("[NULLABLE]:{}", rsc.getInt("NULLABLE"));
+					log.debug("[REMARKS]:{}", rsc.getString("REMARKS"));
+					log.debug("[COLUMN_DEF]:{}", rsc.getString("COLUMN_DEF"));
+					log.debug("[IS_NULLABLE]:{}", rsc.getString("IS_NULLABLE"));
+					// log.debug("[IS_AUTOINCREMENT]:{}", rsc.getString("IS_AUTOINCREMENT"));
 
-				ResultSet columns = dbMetaData.getColumns(null, schemaPattern, tableName, null);
-				List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-				while (columns.next()) {
 					Map<String, Object> map = new HashMap<String, Object>();
 
-					String columnName = columns.getString("COLUMN_NAME").toUpperCase();
+					String columnName = rsc.getString("COLUMN_NAME").toUpperCase();
 					map.put("columnName", columnName);
-					log.debug("[columnName]:{}", columnName);
 
-					map.put("columnComments", commentsMap.get(columnName));
-					log.debug("[columnComments]:{}", commentsMap.get(columnName));
+					String columnComments = rsc.getString("REMARKS").toUpperCase();
+					map.put("columnComments", columnComments);
 
 					String propertyName = columnName.toLowerCase();
 					map.put("propertyName", propertyName);
-					log.debug("[propertyName]:{}", propertyName);
 
-					int columnSize = columns.getInt("COLUMN_SIZE");
+					int columnSize = rsc.getInt("COLUMN_SIZE");
 					map.put("columnSize", columnSize);
-					log.debug("[columnSize]:{}", columnSize);
 
-					int decimalDigits = columns.getInt("DECIMAL_DIGITS");
+					int decimalDigits = rsc.getInt("DECIMAL_DIGITS");
 					map.put("decimalDigits", decimalDigits);
-					log.debug("[decimalDigits]:{}", decimalDigits);
 
-					int dataType = columns.getInt("DATA_TYPE");
+					int dataType = rsc.getInt("DATA_TYPE");
 					map.put("dataType", dataType);
-					log.debug("[dataType]:{}", dataType);
 
-					MyTypes mts = TypeUtils.getTypes(dataType, columnSize, decimalDigits);
+					MyType mts = TypeUtils.getType(dataType, columnSize, decimalDigits);
 
 					String jdbcTypeName = mts.getJdbcTypeName();
 					map.put("jdbcTypeName", jdbcTypeName);
@@ -193,9 +146,97 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 					map.put("javaClassSimpleName", javaClassSimpleName);
 					log.debug("[javaClassSimpleName]:{}", javaClassSimpleName);
 
-					list.add(map);
+					set.add(map);
 				}
-				return list;
+				rsc.close();
+				connection.close();
+
+				return set;
+			}
+		});
+	}
+
+	@Override
+	public Set<Table> selectTables() throws DataAccessException {
+		return (Set<Table>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
+			@Override
+			public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
+				DatabaseMetaData dbMetaData = connection.getMetaData();
+				log.debug("{} -> {}", dbMetaData.getDatabaseProductName(), dbMetaData.getDatabaseProductVersion());
+
+				SimpleDriverDataSource simpleDriverDataSource = ((SimpleDriverDataSource) dataSource);
+				// MySQL大小写不关注
+				// Oracle必须大写
+				// SQLServer不需要
+				String schemaPattern = simpleDriverDataSource.getUsername().toUpperCase();
+				String url = simpleDriverDataSource.getUrl();
+
+				if (url.toLowerCase().contains("sqlserver")) {
+					schemaPattern = null;
+				}
+
+				ResultSet rst = dbMetaData.getTables(null, schemaPattern, null, new String[] { "TABLE" });
+				Assert.notNull(rst);
+
+				Set<Table> tables = new HashSet<Table>();
+				Table table = new Table();
+
+				while (rst.next()) {
+					table.setTableName(rst.getString("TABLE_NAME"));
+					table.setRemarks(rst.getString("REMARKS"));
+					table.setDomainClassName(JavaBeansUtils.getCamelCaseString(table.getTableName(), true));
+
+					tables.add(table);
+
+					log.debug("\n\n========================================表{}", table.getTableName());
+					log.debug("[TABLE_NAME]:{}", table.getTableName());// 表名
+					log.debug("[REMARKS]:{}", table.getRemarks());// 注释
+
+					ResultSet rsc = dbMetaData.getColumns(null, schemaPattern, table.getTableName(), null);
+					Assert.notNull(rsc);
+
+					Set<Column> columns = new HashSet<Column>();
+					Column column = new Column();
+					while (rsc.next()) {
+						column.setColumnName(rsc.getString("COLUMN_NAME"));
+						column.setDataType(rsc.getInt("DATA_TYPE"));
+						column.setTypeName(rsc.getString("TYPE_NAME"));
+						column.setColumnSize(rsc.getInt("COLUMN_SIZE"));
+						column.setDecimalDigits(rsc.getInt("DECIMAL_DIGITS"));
+						column.setNullable(rsc.getInt("NULLABLE"));
+						column.setRemarks(rsc.getString("REMARKS"));
+						column.setColumnDef(rsc.getString("COLUMN_DEF"));
+						column.setIsNullable(rsc.getString("IS_NULLABLE"));
+						// column.setIsAutoincrement(rsc.getString("IS_AUTOINCREMENT"));
+
+						MyType type = TypeUtils.getType(column.getDataType(), column.getColumnSize(),
+								column.getDecimalDigits());
+						column.setPropertyName(column.getColumnName().toLowerCase());
+						column.setJdbcTypeName(type.getJdbcTypeName());
+						column.setJavaClassName(type.getJavaClassName());
+						column.setJavaClassSimpleName(type.getJavaClassSimpleName());
+
+						log.debug("\n----------------------------------------列{}", rsc.getString("COLUMN_NAME"));
+						log.debug("[COLUMN_NAME ]:{}", rsc.getString("COLUMN_NAME"));
+						log.debug("[DATA_TYPE]:{}", rsc.getInt("DATA_TYPE"));
+						log.debug("[TYPE_NAME]:{}", rsc.getString("TYPE_NAME"));
+						log.debug("[COLUMN_SIZE]:{}", rsc.getInt("COLUMN_SIZE"));
+						log.debug("[DECIMAL_DIGITS]:{}", rsc.getInt("DECIMAL_DIGITS"));
+						log.debug("[NULLABLE]:{}", rsc.getInt("NULLABLE"));
+						log.debug("[REMARKS]:{}", rsc.getString("REMARKS"));
+						log.debug("[COLUMN_DEF]:{}", rsc.getString("COLUMN_DEF"));
+						log.debug("[IS_NULLABLE]:{}", rsc.getString("IS_NULLABLE"));
+						// log.debug("[IS_AUTOINCREMENT]:{}", rsc.getString("IS_AUTOINCREMENT"));
+
+						columns.add(column);
+					}
+					table.setColumns(columns);
+					rsc.close();
+				}
+				rst.close();
+				connection.close();
+
+				return tables;
 			}
 		});
 	}
