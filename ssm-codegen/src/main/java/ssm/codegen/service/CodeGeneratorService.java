@@ -8,6 +8,20 @@ import java.io.IOException;
  */
 public interface CodeGeneratorService {
 
+	String CLASS_NAME_HOLDER = "Xxx";
+	String FTL_EXTENSION = ".ftl";
+
+	String FTL_MYBATIS_CONFIG = "mybatis-config.xml.ftl";
+	String FTL_DOMAIN = "/Xxx.java.ftl";
+	String FTL_DAO = "XxxDao.java.ftl";
+	String FTL_DAO_SQLSESSION_IMPL = "XxxDaoSqlSessionImpl.java.ftl";
+	String FTL_DAO_JDBC_IMPL = "XxxDaoJdbcImpl.java.ftl";
+	String FTL_DAO_MYBATIS_MAPPER = "XxxDaoMyBatisMapper.xml.ftl";
+	String FTL_SERVICE = "XxxService.java.ftl";
+	String FTL_SERVICE_IMPL = "XxxServiceImpl.java.ftl";
+	String FTL_FACADE = "Facade.java.ftl";
+	String FTL_FACADE_IMPL = "FacadeImpl.java.ftl";
+
 	/**
 	 * 生成 mybatis-conifg 文件
 	 * 

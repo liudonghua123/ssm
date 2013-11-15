@@ -2,26 +2,26 @@ package ${servicePackageName};
 
 import java.util.List;
 
-import ${domainPackageName}.${domainClassName};
+import ${domainPackageName}.${table.domainClassName};
 
 /**
- * @author Jin,QingHua
+ * @author ${author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
-public interface ${domainClassName}Service {
+public interface ${table.domainClassName}Service {
 
-	Long create${domainClassName}(${domainClassName} t);
+	Long create${table.domainClassName}(${table.domainClassName} t);
 
-	int modify${domainClassName}(${domainClassName} t);
+	int modify${table.domainClassName}(${table.domainClassName} t);
 
-	int remove${domainClassName}(${domainClassName} t);
+	int remove${table.domainClassName}(${table.domainClassName} t);
 
-	${domainClassName} get${domainClassName}(${domainClassName} t);
+	${table.domainClassName} get${table.domainClassName}(${table.domainClassName} t);
 
-	List<${domainClassName}> get${domainClassName}List(${domainClassName} t);
+	List<${table.domainClassName}> get${table.domainClassName}List(${table.domainClassName} t);
 
-	Long get${domainClassName}Count(${domainClassName} t);
+	Long get${table.domainClassName}Count(${table.domainClassName} t);
 
-	<#--List<${domainClassName}> get${domainClassName}PaginatedList(${domainClassName} t);-->
+	<#--List<${table.domainClassName}> get${table.domainClassName}PaginatedList(${table.domainClassName} t);-->
 
 }

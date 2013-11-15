@@ -1,12 +1,12 @@
 package ${daoPackageName};
 
-import ${domainPackageName}.${domainClassName};
+import ${domainPackageName}.${table.domainClassName};
 import ${ssmPackageName}.dao.EntityDao;
 
 /**
- * @author Jin,QingHua
+ * @author ${author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
-public interface ${domainClassName}Dao extends EntityDao<${domainClassName}> {
+public interface ${table.domainClassName}Dao extends EntityDao<${table.domainClassName}> {
 
 }

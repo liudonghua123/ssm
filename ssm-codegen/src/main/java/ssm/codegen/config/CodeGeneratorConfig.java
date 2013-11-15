@@ -21,9 +21,14 @@ public class CodeGeneratorConfig {
 	@Resource(name = "propertiesConfiguration")
 	private PropertiesConfiguration cfg;
 
-	private String dbmsPorductName; // 数据库ORACLE|MYSQL|MSSQLSERVER
+	private String author = "jinqinghua@gmail.com";
+	private String dateFormatStyle = "yyyy-MM-dd HH:mm:ss";
+
+	private String databaseProductName; // 数据库ORACLE|MYSQL|MSSQLSERVER
 	private String projectPathString; // 项目根目录（生成文件的目录）
 	private String projectSourcePathString; // 项目src目录
+	private String projectResourcesPathString; // resoures目录，支持Maven项目
+
 	private String projectPackageName; // 项目包，一般是com.company.project
 	private String domainPackageName;
 	private String daoPackageName;
@@ -34,6 +39,7 @@ public class CodeGeneratorConfig {
 	private String serviceImplPackageName;
 	private String facadePackageName;
 	private String facadeImplPackageName;
+
 	private String ssmPackageName;
 	private String baseDomainClassName;
 	private String tableNameSqlConditions; // 过滤表名的SQL条件
@@ -45,29 +51,34 @@ public class CodeGeneratorConfig {
 	public void init() throws ConfigurationException {
 		logger.debug("init...");
 
+		this.author = cfg.getString("cfg.author");
+		this.dateFormatStyle = cfg.getString("cfg.dateFormatStyle");
+
 		// DBMS
-		this.dbmsPorductName = cfg.getString("ssm.dbmsPorductName");
+		this.databaseProductName = cfg.getString("cfg.databaseProductName");
 		// PATH
-		this.projectPathString = cfg.getString("ssm.path.projectPathString");
-		this.projectSourcePathString = cfg.getString("ssm.path.projectSourcePathString");
+		this.projectPathString = cfg.getString("cfg.path.project");
+		this.projectSourcePathString = cfg.getString("cfg.path.projectSource");
+		this.projectResourcesPathString = cfg.getString("cfg.path.projectResources");
+
 		// PACKAGE
-		this.projectPackageName = cfg.getString("ssm.package.projectPackageName");
-		this.domainPackageName = cfg.getString("ssm.package.domainPackageName");
+		this.projectPackageName = cfg.getString("cfg.package.project");
+		this.domainPackageName = cfg.getString("cfg.package.domain");
 
-		this.daoPackageName = cfg.getString("ssm.package.daoPackageName");
-		this.daoJdbcImplPackageName = cfg.getString("ssm.package.daoJdbcImplPackageName");
-		this.daoSqlSessionImplPackageName = cfg.getString("ssm.package.daoSqlSessionImplPackageName");
-		this.daoMyBatisMapperPackageName = cfg.getString("ssm.package.daoMyBatisMapperPackageName");
+		this.daoPackageName = cfg.getString("cfg.package.dao");
+		this.daoJdbcImplPackageName = cfg.getString("cfg.package.daoJdbcImpl");
+		this.daoSqlSessionImplPackageName = cfg.getString("cfg.package.daoSqlSessionImpl");
+		this.daoMyBatisMapperPackageName = cfg.getString("cfg.package.daoMyBatisMapper");
 
-		this.servicePackageName = cfg.getString("ssm.package.servicePackageName");
-		this.serviceImplPackageName = cfg.getString("ssm.package.serviceImplPackageName");
+		this.servicePackageName = cfg.getString("cfg.package.service");
+		this.serviceImplPackageName = cfg.getString("cfg.package.serviceImpl");
 
-		this.facadePackageName = cfg.getString("ssm.package.facadePackageName");
-		this.facadeImplPackageName = cfg.getString("ssm.package.facadeImplPackageName");
+		this.facadePackageName = cfg.getString("cfg.package.facade");
+		this.facadeImplPackageName = cfg.getString("cfg.package.facadeImpl");
 
-		this.ssmPackageName = cfg.getString("ssm.package.ssmPackageName");
+		this.ssmPackageName = cfg.getString("cfg.package.ssm");
 		// CLASS
-		this.baseDomainClassName = cfg.getString("ssm.class.baseDomainClassName");
+		this.baseDomainClassName = cfg.getString("cfg.class.baseDomain");
 		// SQL
 		this.tableNameSqlConditions = cfg.getString("sql.tablename.conditions");
 		logger.info("tableNameSqlConditions:{}", tableNameSqlConditions);
@@ -98,11 +109,20 @@ public class CodeGeneratorConfig {
 	 * @return ftl文件的位置
 	 */
 	public String getDbmsFtlFilePathString(String ftlFileName) {
-		return dbmsPorductName.toLowerCase().concat("/").concat(ftlFileName);
+		return databaseProductName.toLowerCase().concat("/").concat(ftlFileName);
 	}
 
-	public String getDbmsPorductName() {
-		return dbmsPorductName;
+	// ==============================getters==============================
+	public String getAuthor() {
+		return author;
+	}
+
+	public String getDateFormatStyle() {
+		return dateFormatStyle;
+	}
+
+	public String getDatabaseProductName() {
+		return databaseProductName;
 	}
 
 	public String getProjectPathString() {
@@ -111,6 +131,10 @@ public class CodeGeneratorConfig {
 
 	public String getProjectSourcePathString() {
 		return projectSourcePathString;
+	}
+
+	public String getProjectResourcesPathString() {
+		return projectResourcesPathString;
 	}
 
 	public String getProjectPackageName() {

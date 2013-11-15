@@ -1,5 +1,5 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<!-- @author Jin,QingHua -->
+<!-- @author ${author} -->
 <!-- @version ${now?string("yyyy-MM-dd HH:mm:ss")} -->
 <configuration>
 
@@ -52,8 +52,8 @@
 	<!-- http://www.mybatis.org/core/zh/configuration.html#mappers -->
 	<!-- 
 	<mappers>
-<#list domainClassNameList as domainClassName>
-		<mapper resource="${projectPackageName?replace(".", "/")}/dao/mybatis/mapper/${domainClassName}Mapper.xml"/>
+<#list tables as table>
+		<mapper resource="${projectPackageName?replace(".", "/")}/dao/mybatis/mapper/${table.domainClassName}Mapper.xml"/>
 </#list>
 	</mappers>
 	-->

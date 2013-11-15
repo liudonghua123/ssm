@@ -43,7 +43,7 @@ public class CodeGenerator {
 		codeGenerator.generateDaoSqlSessionImplFiles();
 		codeGenerator.generateDaoMyBatisMapperFiles();
 		codeGenerator.generateMyBatisConfigFile(true);
-		//codeGenerator.generateDaoJdbcImplFiles();
+		codeGenerator.generateDaoJdbcImplFiles();
 		codeGenerator.generateServiceFiles();
 		codeGenerator.generateServiceImplFiles();
 		codeGenerator.generateFacadeFile(true);

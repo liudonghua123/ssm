@@ -11,14 +11,14 @@ import java.math.BigDecimal;
 import ${baseDomainClassName};
 
 /**
- * @author Jin,QingHua
+ * @author ${author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
-public class ${domainClassName} extends BaseDomain<${domainClassName}> implements Serializable {
+public class ${table.domainClassName} extends BaseDomain<${table.domainClassName}> implements Serializable {
 
 	private static final long serialVersionUID = -1L;
 
-<#list columnList as column>
+<#list table.columns as column>
 	<#if (column.columnComments)??>
 	/**
 	 * ${(column.columnComments)!""}
@@ -28,11 +28,11 @@ public class ${domainClassName} extends BaseDomain<${domainClassName}> implement
 
 </#list>
 
-	public ${domainClassName}() {
+	public ${table.domainClassName}() {
 
 	}
 
-<#list columnList as column>
+<#list table.columns as column>
 	public ${column.javaClassSimpleName} get${column.propertyName?cap_first}() {
 		return ${column.propertyName};
 	}

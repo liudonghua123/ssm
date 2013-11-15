@@ -1,7 +1,10 @@
 package ssm.codegen.domain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author jinqinghua@gmail.com
@@ -23,7 +26,7 @@ public class Table {
 	/**
 	 * 包含的列的集合
 	 */
-	private Set<Column> columns = new HashSet<Column>();
+	private List<Column> columns = new ArrayList<Column>();
 
 	public Table() {
 	}
@@ -56,12 +59,16 @@ public class Table {
 		this.domainClassName = domainClassName;
 	}
 
-	public Set<Column> getColumns() {
+	public List<Column> getColumns() {
 		return columns;
 	}
 
-	public void setColumns(Set<Column> columns) {
+	public void setColumns(List<Column> columns) {
 		this.columns = columns;
 	}
 
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
 }

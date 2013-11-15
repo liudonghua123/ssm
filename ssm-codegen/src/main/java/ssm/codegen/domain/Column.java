@@ -1,5 +1,8 @@
 package ssm.codegen.domain;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * @author jinqinghua@gmail.com
  * @version 2013.11.15
@@ -141,4 +144,8 @@ public class Column {
 		this.javaClassSimpleName = javaClassSimpleName;
 	}
 
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
 }

@@ -13,31 +13,31 @@ import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.stereotype.Repository;
 
-import ${daoPackageName}.${domainClassName}Dao;
-import ${domainPackageName}.${domainClassName};
+import ${daoPackageName}.${table.domainClassName}Dao;
+import ${domainPackageName}.${table.domainClassName};
 
 /**
- * @author Jin,QingHua
+ * @author ${author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
 @Repository
-public class ${domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSupport implements ${domainClassName}Dao {
+public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSupport implements ${table.domainClassName}Dao {
 
-	ParameterizedRowMapper<${domainClassName}> rowMapperForList = new ParameterizedRowMapper<${domainClassName}>() {
-		public ${domainClassName} mapRow(ResultSet rs, int rowNum) throws SQLException {
-			${domainClassName} ${domainClassName?uncap_first} = new ${domainClassName}();
-<#list columnList as column>
-			${domainClassName?uncap_first}.set${column.propertyName?cap_first}(rs.get<#if column.javaClassSimpleName?starts_with("Int")>Int<#else>${column.javaClassSimpleName}</#if>("${column.columnName}"));
+	ParameterizedRowMapper<${table.domainClassName}> rowMapperForList = new ParameterizedRowMapper<${table.domainClassName}>() {
+		public ${table.domainClassName} mapRow(ResultSet rs, int rowNum) throws SQLException {
+			${table.domainClassName} ${table.domainClassName?uncap_first} = new ${table.domainClassName}();
+<#list table.columns as column>
+			${table.domainClassName?uncap_first}.set${column.propertyName?cap_first}(rs.get<#if column.javaClassSimpleName?starts_with("Int")>Int<#else>${column.javaClassSimpleName}</#if>("${column.columnName}"));
 </#list>
-			return ${domainClassName?uncap_first};
+			return ${table.domainClassName?uncap_first};
 		}
 	};
 
-	protected String getConditionSql(${domainClassName} t) {
+	protected String getConditionSql(${table.domainClassName} t) {
 		StringBuffer sb = new StringBuffer();	
 		//like CONCAT('%', :contact, '%')"
 		
-<#list columnList as column>	
+<#list table.columns as column>	
 		if (null != t.get${column.propertyName?cap_first}() <#if column.javaClassSimpleName == "String">&& 0 != t.get${column.propertyName?cap_first}().length()</#if>) {
 			sb.append(" and ${column.propertyName}=:${column.propertyName}");
 		}
@@ -45,35 +45,35 @@ public class ${domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSupport 
 		return sb.toString();
 	}
 
-	public int deleteEntity(${domainClassName} t) throws DataAccessException {
+	public int deleteEntity(${table.domainClassName} t) throws DataAccessException {
 		if (null != t.getId()) {// deleteById
-			return super.getNamedParameterJdbcTemplate().getJdbcOperations().update("delete from ${tableName} where id=?", t.getId());
+			return super.getNamedParameterJdbcTemplate().getJdbcOperations().update("delete from ${table.tableName} where id=?", t.getId());
 		} else {// deleteByIds
-			String[] ids = (String[]) t.getMap().get("ids");
+			String[] ids = (String[]) t.get_map().get("ids");
 			if (null != ids) {
 				return super.getNamedParameterJdbcTemplate().getJdbcOperations().update(
-						"delete from ${tableName} where id in (" + StringUtils.join(ids, ",") + ")");
+						"delete from ${table.tableName} where id in (" + StringUtils.join(ids, ",") + ")");
 			} else {
 				return 0;
 			}
 		}
 	}
 
-	public Integer insertEntity(${domainClassName} t) throws DataAccessException {
+	public Long insertEntity(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
-		sb.append("insert into ${tableName} ");
-		sb.append("<#list columnList as column> ${column.propertyName}<#if column_has_next>,</#if></#list>");
+		sb.append("insert into ${table.tableName} ");
+		sb.append("<#list table.columns as column> ${column.propertyName}<#if column_has_next>,</#if></#list>");
 		sb.append(" values ");
-		sb.append("<#list columnList as column>:${column.propertyName}<#if column_has_next>,</#if></#list>");
+		sb.append("<#list table.columns as column>:${column.propertyName}<#if column_has_next>,</#if></#list>");
 		return super.getNamedParameterJdbcTemplate().getJdbcOperations().update(sb.toString(), new BeanPropertySqlParameterSource(t));
 	}
 
-	public ${domainClassName} selectEntity(${domainClassName} t) throws DataAccessException {
+	public ${table.domainClassName} selectEntity(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
-		sb.append("select * from ${tableName} where 1=1 ");
+		sb.append("select * from ${table.tableName} where 1=1 ");
 		sb.append(this.getConditionSql(t));
-		List<${domainClassName}> entityList = super.getNamedParameterJdbcTemplate().getJdbcOperations().query(sb.toString(),
-				ParameterizedBeanPropertyRowMapper.newInstance(${domainClassName}.class), new BeanPropertySqlParameterSource(t));
+		List<${table.domainClassName}> entityList = super.getNamedParameterJdbcTemplate().getJdbcOperations().query(sb.toString(),
+				ParameterizedBeanPropertyRowMapper.newInstance(${table.domainClassName}.class), new BeanPropertySqlParameterSource(t));
 		if (null == entityList || 0 == entityList.size()) {
 			return null;
 		}
@@ -84,39 +84,39 @@ public class ${domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSupport 
 		}
 	}
 
-	public Integer selectEntityCount(${domainClassName} t) throws DataAccessException {
+	public Long selectEntityCount(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
-		sb.append("select count(*) from ${tableName} where 1=1");
+		sb.append("select count(*) from ${table.tableName} where 1=1");
 		sb.append(this.getConditionSql(t));
 		return super.getNamedParameterJdbcTemplate().getJdbcOperations().queryForInt(sb.toString(), new BeanPropertySqlParameterSource(t));
 	}
 
-	public List<${domainClassName}> selectEntityList(${domainClassName} t) throws DataAccessException {
+	public List<${table.domainClassName}> selectEntityList(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
-		sb.append("select * from ${tableName} where 1=1");
+		sb.append("select * from ${table.tableName} where 1=1");
 		sb.append(this.getConditionSql(t));
 		//sb.append(" order by id desc");
 		return super.getNamedParameterJdbcTemplate().getJdbcOperations().query(sb.toString(), rowMapperForList,
 				new BeanPropertySqlParameterSource(t));
 	}
 
-	public List<${domainClassName}> selectEntityPaginatedList(${domainClassName} t) throws DataAccessException {
+	public List<${table.domainClassName}> selectEntityPaginatedList(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
-		sb.append("select * from ${tableName} where 1=1");
+		sb.append("select * from ${table.tableName} where 1=1");
 		sb.append(this.getConditionSql(t));
 		//sb.append(" order by id desc");
 		sb.append(" limit ");
-		sb.append(t.getRow().getFirst());
+		sb.append(t.get_rowBounds().getOffset());
 		sb.append(",");
-		sb.append(t.getRow().getCount());
+		sb.append(t.get_rowBounds().getLimit());
 		return super.getNamedParameterJdbcTemplate().getJdbcOperations().query(sb.toString(), rowMapperForList,
 				new BeanPropertySqlParameterSource(t));
 	}
 
-	public int updateEntity(${domainClassName} t) throws DataAccessException {
+	public int updateEntity(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
 		
-<#list columnList as column>	
+<#list table.columns as column>	
 		if (null != t.get${column.propertyName?cap_first}() <#if column.javaClassSimpleName == "String">&& 0 != t.get${column.propertyName?cap_first}().length()</#if>) {
 			sb.append("${column.propertyName}=:${column.propertyName},");
 		}
@@ -126,7 +126,7 @@ public class ${domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSupport 
 		if (sqlCondition.endsWith(",")) {
 			sqlCondition = sqlCondition.substring(0, sqlCondition.length() - 1);
 		}
-		String sql = "update ${tableName} set " + sqlCondition + " where id=:id";
+		String sql = "update ${table.tableName} set " + sqlCondition + " where id=:id";
 		return super.getNamedParameterJdbcTemplate().update(sql, new BeanPropertySqlParameterSource(t));
 	}
 
