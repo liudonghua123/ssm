@@ -45,11 +45,11 @@ public class CodeGeneratorConfig {
 	private String tableNameSqlConditions; // 过滤表名的SQL条件
 
 	public CodeGeneratorConfig() {
-		logger.debug("do construct...");
+		logger.debug("CodeGeneratorConfig Construct...");
 	}
 
 	public void init() throws ConfigurationException {
-		logger.debug("init...");
+		logger.debug("CodeGeneratorConfig Init...");
 
 		this.author = cfg.getString("cfg.author");
 		this.dateFormatStyle = cfg.getString("cfg.dateFormatStyle");
@@ -91,7 +91,11 @@ public class CodeGeneratorConfig {
 	 * @return Package名称的绝对地址
 	 */
 	public File convertPackageToPath(final String packageName) {
-		return new File(this.getProjectSourcePath(), StringUtils.replace(packageName, ".", "/"));
+		return this.convertPackageToPath(this.getProjectSourcePath(), packageName);
+	}
+
+	public File convertPackageToPath(File path, final String packageName) {
+		return new File(path, StringUtils.replace(packageName, ".", "/"));
 	}
 
 	/**
@@ -101,6 +105,15 @@ public class CodeGeneratorConfig {
 	 */
 	public File getProjectSourcePath() {
 		return new File(this.projectSourcePathString);
+	}
+
+	/**
+	 * 获取项目resources目录的绝对地址
+	 * 
+	 * @return resources目录的绝对地址
+	 */
+	public File getProjectResourcePath() {
+		return new File(this.projectResourcesPathString);
 	}
 
 	/**

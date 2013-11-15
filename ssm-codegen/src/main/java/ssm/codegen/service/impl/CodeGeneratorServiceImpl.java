@@ -102,8 +102,8 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		}
 
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_MYBATIS_CONFIG), model);
-		this.generateFile(new File(cfg.getProjectSourcePath(), FTL_MYBATIS_CONFIG.replace(FTL_EXTENSION, "")), content,
-				true);
+		this.generateFile(new File(cfg.getProjectResourcesPathString(), FTL_MYBATIS_CONFIG.replace(FTL_EXTENSION, "")),
+				content, true);
 	}
 
 	@Override
@@ -186,8 +186,9 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 			model.put("table", table);
 
 			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO_MYBATIS_MAPPER), model);
-			File file = new File(cfg.convertPackageToPath(cfg.getDaoMyBatisMapperPackageName()), convertFtlToFile(
-					FTL_DAO_MYBATIS_MAPPER, table.getDomainClassName()));
+			File file = new File(cfg.convertPackageToPath(cfg.getProjectResourcePath(),
+					cfg.getDaoMyBatisMapperPackageName()), convertFtlToFile(FTL_DAO_MYBATIS_MAPPER,
+					table.getDomainClassName()));
 			this.generateFile(file, content, false);
 		}
 	}
