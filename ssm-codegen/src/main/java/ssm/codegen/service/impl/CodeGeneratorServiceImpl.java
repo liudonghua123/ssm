@@ -69,14 +69,14 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	}
 
 	@Override
-	public void generateMyBatisConfigFile(boolean isIncludeAllTables) throws IOException {
+	public void generateMyBatisConfigFile(boolean overwrite) throws IOException {
 		if (null == model) {
 			this.prepare();
 		}
 
+		File file = new File(cfg.getProjectResourcesPathString(), convertFtlToFile(FTL_MYBATIS_CONFIG, ""));
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_MYBATIS_CONFIG), model);
-		this.generateFile(new File(cfg.getProjectResourcesPathString(), FTL_MYBATIS_CONFIG.replace(FTL_EXTENSION, "")),
-				content, true);
+		this.generateFile(file, content, true);
 	}
 
 	@Override
@@ -88,9 +88,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		List<Table> tables = (List<Table>) model.get("tables");
 		for (Table table : tables) {
 			model.put("table", table);
-			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DOMAIN), model);
+
 			File file = new File(cfg.convertPackageToPath(cfg.getDomainPackageName()), convertFtlToFile(FTL_DOMAIN,
 					table.getDomainClassName()));
+			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DOMAIN), model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -105,9 +106,9 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		for (Table table : tables) {
 			model.put("table", table);
 
-			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO), model);
 			File file = new File(cfg.convertPackageToPath(cfg.getDaoPackageName()), convertFtlToFile(FTL_DAO,
 					table.getDomainClassName()));
+			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO), model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -122,10 +123,9 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		for (Table table : tables) {
 			model.put("table", table);
 
-			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO_SQLSESSION_IMPL), model);
-
 			File file = new File(cfg.convertPackageToPath(cfg.getDaoSqlSessionImplPackageName()), convertFtlToFile(
 					FTL_DAO_SQLSESSION_IMPL, table.getDomainClassName()));
+			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO_SQLSESSION_IMPL), model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -140,10 +140,9 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		for (Table table : tables) {
 			model.put("table", table);
 
-			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO_JDBC_IMPL), model);
-
 			File file = new File(cfg.convertPackageToPath(cfg.getDaoJdbcImplPackageName()), convertFtlToFile(
 					FTL_DAO_JDBC_IMPL, table.getDomainClassName()));
+			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO_JDBC_IMPL), model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -158,10 +157,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		for (Table table : tables) {
 			model.put("table", table);
 
-			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO_MYBATIS_MAPPER), model);
 			File file = new File(cfg.convertPackageToPath(cfg.getProjectResourcePath(),
 					cfg.getDaoMyBatisMapperPackageName()), convertFtlToFile(FTL_DAO_MYBATIS_MAPPER,
 					table.getDomainClassName()));
+			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_DAO_MYBATIS_MAPPER), model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -176,10 +175,9 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		for (Table table : tables) {
 			model.put("table", table);
 
-			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_SERVICE), model);
-
 			File file = new File(cfg.convertPackageToPath(cfg.getServicePackageName()), convertFtlToFile(FTL_SERVICE,
 					table.getDomainClassName()));
+			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_SERVICE), model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -194,10 +192,9 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		for (Table table : tables) {
 			model.put("table", table);
 
-			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_SERVICE_IMPL), model);
-
 			File file = new File(cfg.convertPackageToPath(cfg.getServiceImplPackageName()), convertFtlToFile(
 					FTL_SERVICE_IMPL, table.getDomainClassName()));
+			String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_SERVICE_IMPL), model);
 			this.generateFile(file, content, false);
 		}
 
@@ -209,16 +206,15 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	}
 
 	@Override
-	public void generateFacadeFile(boolean isIncludeAllTables) throws IOException {
+	public void generateFacadeFile(boolean overwrite) throws IOException {
 		if (null == model) {
 			this.prepare();
 		}
 
+		File file = new File(cfg.convertPackageToPath(cfg.getFacadePackageName()), convertFtlToFile(FTL_FACADE, ""));
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_FACADE), model);
+		this.generateFile(file, content, false);
 
-		this.generateFile(
-				new File(cfg.convertPackageToPath(cfg.getFacadePackageName()), convertFtlToFile(FTL_FACADE, "")),
-				content, false);
 	}
 
 	@Override
@@ -227,15 +223,14 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	}
 
 	@Override
-	public void generateFacadeImplFile(boolean isIncludeAllTables) throws IOException {
+	public void generateFacadeImplFile(boolean overwrite) throws IOException {
 		if (null == model) {
 			this.prepare();
 		}
 
+		File file = new File(cfg.convertPackageToPath(cfg.getFacadeImplPackageName()), convertFtlToFile(
+				FTL_FACADE_IMPL, ""));
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_FACADE_IMPL), model);
-
-		this.generateFile(
-				new File(cfg.convertPackageToPath(cfg.getFacadeImplPackageName()),
-						convertFtlToFile(FTL_FACADE_IMPL, "")), content, false);
+		this.generateFile(file, content, false);
 	}
 }
