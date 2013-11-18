@@ -12,7 +12,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @see http://technet.microsoft.com/zh-cn/library/ms378769.aspx
  */
 public class Table {
-
 	private String tableSchem; // 表Schema
 	private String tableName; // 表名
 	private String remarks;// 表注释，有些库不提供此字段，如SQLServer, Oracle
