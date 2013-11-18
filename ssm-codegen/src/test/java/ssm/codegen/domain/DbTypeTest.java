@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ssm.codegen.domain.type.DbType;
+
 public class DbTypeTest {
 
 	@Test

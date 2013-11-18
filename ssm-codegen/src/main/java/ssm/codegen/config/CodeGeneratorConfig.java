@@ -6,9 +6,12 @@ import javax.annotation.Resource;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import ssm.codegen.domain.type.DbType;
+import ssm.codegen.domain.type.ProjectType;
 
 /**
  * @author Jin,QingHua
@@ -24,10 +27,18 @@ public class CodeGeneratorConfig {
 	private String author = "jinqinghua@gmail.com";
 	private String dateFormatStyle = "yyyy-MM-dd HH:mm:ss";
 
-	private String databaseProductName; // 数据库ORACLE|MYSQL|MSSQLSERVER
-	private String projectPathString; // 项目根目录（生成文件的目录）
-	private String projectSourcePathString; // 项目src目录
-	private String projectResourcesPathString; // resoures目录，支持Maven项目
+	private String projectTypeName;// MAVEN|ECLIPSE
+	private String jdbcUrl;
+
+	// private String databaseProductName; // 数据库ORACLE|MYSQL|MSSQLSERVER|DB2
+	private String projectPathName; // 项目根目录（生成文件的目录）
+
+	private String mavenProjectJavaPathName;
+	private String mavenProjectResourcesPathName;
+	private String mavenProjectWebappPathName;
+
+	private String eclipseProjectSrcPathName;
+	private String eclipseProjectWebContentPathName;
 
 	private String projectPackageName; // 项目包，一般是com.company.project
 	private String domainPackageName;
@@ -42,7 +53,8 @@ public class CodeGeneratorConfig {
 
 	private String ssmPackageName;
 	private String baseDomainClassName;
-	private String tableNameSqlConditions; // 过滤表名的SQL条件
+
+	// private String tableNameSqlConditions; // 过滤表名的SQL条件
 
 	public CodeGeneratorConfig() {
 		logger.debug("CodeGeneratorConfig Construct...");
@@ -51,15 +63,20 @@ public class CodeGeneratorConfig {
 	public void init() throws ConfigurationException {
 		logger.debug("CodeGeneratorConfig Init...");
 
-		this.author = cfg.getString("cfg.author");
-		this.dateFormatStyle = cfg.getString("cfg.dateFormatStyle");
+		// this.author = cfg.getString("cfg.author");
+		// this.dateFormatStyle = cfg.getString("cfg.dateFormatStyle");
+		this.projectTypeName = cfg.getString("cfg.type.project");
+		this.jdbcUrl = cfg.getString("jdbc.url");
 
-		// DBMS
-		this.databaseProductName = cfg.getString("cfg.databaseProductName");
 		// PATH
-		this.projectPathString = cfg.getString("cfg.path.project");
-		this.projectSourcePathString = cfg.getString("cfg.path.projectSource");
-		this.projectResourcesPathString = cfg.getString("cfg.path.projectResources");
+		this.projectPathName = cfg.getString("cfg.path.project");
+
+		this.mavenProjectJavaPathName = cfg.getString("cfg.path.project.maven.java");
+		this.mavenProjectResourcesPathName = cfg.getString("cfg.path.project.maven.resources");
+		this.mavenProjectWebappPathName = cfg.getString("cfg.path.project.maven.webapp");
+
+		this.eclipseProjectSrcPathName = cfg.getString("cfg.path.project.eclipse.src");
+		this.eclipseProjectWebContentPathName = cfg.getString("cfg.path.project.eclipse.WebContent");
 
 		// PACKAGE
 		this.projectPackageName = cfg.getString("cfg.package.project");
@@ -80,52 +97,75 @@ public class CodeGeneratorConfig {
 		// CLASS
 		this.baseDomainClassName = cfg.getString("cfg.class.baseDomain");
 		// SQL
-		this.tableNameSqlConditions = cfg.getString("sql.tablename.conditions");
-		logger.info("tableNameSqlConditions:{}", tableNameSqlConditions);
+		// this.tableNameSqlConditions = cfg.getString("sql.tablename.conditions");
+		// logger.info("tableNameSqlConditions:{}", tableNameSqlConditions);
 	}
 
 	/**
 	 * 将Package名称变为绝对地址
-	 * 
-	 * @param packageName
-	 * @return Package名称的绝对地址
 	 */
-	public File convertPackageToPath(final String packageName) {
-		return this.convertPackageToPath(this.getProjectSourcePath(), packageName);
+	public File convertPackageNameToPath(final String packageName) {
+		return this.convertPackageNameToPath(this.getProjectSourcePath(), packageName);
 	}
 
-	public File convertPackageToPath(File path, final String packageName) {
+	public File convertPackageNameToPath(File path, final String packageName) {
 		return new File(path, StringUtils.replace(packageName, ".", "/"));
 	}
 
 	/**
-	 * 获取项目src目录的绝对地址
+	 * 获取项目java|src目录的绝对地址
 	 * 
-	 * @return src目录的绝对地址
 	 */
 	public File getProjectSourcePath() {
-		return new File(this.projectSourcePathString);
+		switch (ProjectType.valueOf(this.projectTypeName)) {
+		case MAVEN:
+			return new File(this.mavenProjectJavaPathName);
+		case ECLIPSE:
+			return new File(this.eclipseProjectSrcPathName);
+		}
+		return null;
 	}
 
 	/**
 	 * 获取项目resources目录的绝对地址
-	 * 
-	 * @return resources目录的绝对地址
 	 */
 	public File getProjectResourcePath() {
-		return new File(this.projectResourcesPathString);
+		switch (ProjectType.valueOf(this.projectTypeName)) {
+		case MAVEN:
+			return new File(this.mavenProjectResourcesPathName);
+		case ECLIPSE:
+			return new File(this.eclipseProjectSrcPathName);// eclipse resoures和src在同一目录
+		}
+		return null;
 	}
 
 	/**
-	 * 获取不同数据库模板ftl文件的位置
-	 * 
-	 * @return ftl文件的位置
+	 * 获取项目webapp|WebContent目录的绝对地址
 	 */
-	public String getDbmsFtlFilePathString(String ftlFileName) {
-		return databaseProductName.toLowerCase().concat("/").concat(ftlFileName);
+	public File getProjectWebappPath() {
+		switch (ProjectType.valueOf(this.projectTypeName)) {
+		case MAVEN:
+			return new File(this.mavenProjectWebappPathName);
+		case ECLIPSE:
+			return new File(this.eclipseProjectWebContentPathName);
+		}
+		return null;
 	}
 
-	// ==============================getters==============================
+	/**
+	 * 根据数据库类型(从jdbc.url获取)获取不同数据库模板ftl文件的位置
+	 * 
+	 */
+	public String getFtlFilePathName(String ftlFileName) {
+		for (DbType dbType : DbType.values()) {
+			if (this.jdbcUrl.toLowerCase().startsWith("jdbc:" + dbType.getDbmsPorductName().toLowerCase())) {
+				return dbType.getDbmsPorductName().toLowerCase().concat("/").concat(ftlFileName);
+			}
+		}
+		return null;
+	}
+
+	// ==============================Getter and Setters=========================
 	public String getAuthor() {
 		return author;
 	}
@@ -134,20 +174,32 @@ public class CodeGeneratorConfig {
 		return dateFormatStyle;
 	}
 
-	public String getDatabaseProductName() {
-		return databaseProductName;
+	public String getProjectTypeName() {
+		return projectTypeName;
 	}
 
-	public String getProjectPathString() {
-		return projectPathString;
+	public String getProjectPathName() {
+		return projectPathName;
 	}
 
-	public String getProjectSourcePathString() {
-		return projectSourcePathString;
+	public String getMavenProjectJavaPathName() {
+		return mavenProjectJavaPathName;
 	}
 
-	public String getProjectResourcesPathString() {
-		return projectResourcesPathString;
+	public String getMavenProjectResourcesPathName() {
+		return mavenProjectResourcesPathName;
+	}
+
+	public String getMavenProjectWebappPathName() {
+		return mavenProjectWebappPathName;
+	}
+
+	public String getEclipseProjectSrcPathName() {
+		return eclipseProjectSrcPathName;
+	}
+
+	public String getEclipseProjectWebContentPathName() {
+		return eclipseProjectWebContentPathName;
 	}
 
 	public String getProjectPackageName() {
@@ -196,10 +248,6 @@ public class CodeGeneratorConfig {
 
 	public String getBaseDomainClassName() {
 		return baseDomainClassName;
-	}
-
-	public String getTableNameSqlConditions() {
-		return tableNameSqlConditions;
 	}
 
 }

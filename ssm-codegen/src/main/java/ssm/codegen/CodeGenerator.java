@@ -52,7 +52,7 @@ public class CodeGenerator {
 
 		((AbstractApplicationContext) ctx).close(); // close ApplicationContext
 
-		Runtime.getRuntime().exec("cmd.exe /c start " + cfg.getProjectPathString()); // open the folder
+		Runtime.getRuntime().exec("cmd.exe /c start " + cfg.getProjectPathName()); // open the folder
 	}
 
 }
