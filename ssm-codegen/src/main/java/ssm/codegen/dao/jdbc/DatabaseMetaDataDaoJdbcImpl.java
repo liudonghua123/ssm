@@ -21,11 +21,11 @@ import org.springframework.util.Assert;
 
 import ssm.codegen.dao.DatabaseMetaDataDao;
 import ssm.codegen.domain.Column;
-import ssm.codegen.domain.MyType;
 import ssm.codegen.domain.PrimaryKey;
 import ssm.codegen.domain.Table;
 import ssm.codegen.util.JavaBeansUtils;
-import ssm.codegen.util.TypeUtils;
+import ssm.codegen.util.JdbcTypeResolver;
+import ssm.codegen.util.JdbcTypeResolver.JdbcTypeInformation;
 
 /**
  * @author Jin,QingHua
@@ -40,12 +40,13 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 	private DataSource dataSource;
 
 	@Override
-	public List<Table> selectTables() throws DataAccessException {
-		return (List<Table>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
+	public String selectSchemaPattern() throws DataAccessException {
+		return (String) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
 			@Override
 			public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
 				DatabaseMetaData dbMetaData = connection.getMetaData();
 				log.debug("{} -> {}", dbMetaData.getDatabaseProductName(), dbMetaData.getDatabaseProductVersion());
+				log.debug("{} -> {}", dbMetaData.getDriverName(), dbMetaData.getDriverVersion());
 
 				SimpleDriverDataSource simpleDriverDataSource = ((SimpleDriverDataSource) dataSource);
 				// MySQL大小写不关注
@@ -55,20 +56,31 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 				String url = simpleDriverDataSource.getUrl();
 
 				if (url.toLowerCase().contains("sqlserver")) {
-					schemaPattern = null;
+					schemaPattern = "DBO";
 				}
+				return schemaPattern;
+			}
+		});
+	}
 
+	@Override
+	public List<Table> selectTables(final String schemaPattern) throws DataAccessException {
+		return (List<Table>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
+			@Override
+			public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
+				DatabaseMetaData dbMetaData = connection.getMetaData();
 				ResultSet rst = dbMetaData.getTables(null, schemaPattern, null, new String[] { "TABLE" });
 				Assert.notNull(rst);
 				List<Table> tables = new ArrayList<Table>();
 				while (rst.next()) {
 					Table table = new Table();
 
+					table.setTableSchem(rst.getString("TABLE_SCHEM"));
 					table.setTableName(rst.getString("TABLE_NAME").toUpperCase());
 					table.setRemarks(rst.getString("REMARKS"));
 					table.setDomainClassName(JavaBeansUtils.getCamelCaseString(table.getTableName(), true));
 
-					log.debug("\n\n========================================表{}", table.getTableName());
+					log.debug("\n\n==============================表{}", table.getTableName());
 					log.debug("[TABLE_NAME]:{}", table.getTableName());// 表名
 					log.debug("[REMARKS]:{}", table.getRemarks());// 注释
 
@@ -95,11 +107,11 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 				Assert.notNull(rspk);
 				while (rspk.next()) {
 					PrimaryKey primaryKey = new PrimaryKey();
-
+					primaryKey.setTableSchem(rspk.getString("TABLE_SCHEM"));
 					primaryKey.setTableName(rspk.getString("TABLE_NAME").toUpperCase());
 					primaryKey.setCloumnName(rspk.getString("COLUMN_NAME").toUpperCase());
 					primaryKey.setPkName(rspk.getString("PK_NAME").toUpperCase());
-					log.debug("\n----------------------------------------索引{}", primaryKey.getCloumnName());
+					log.debug("\n------------------------------主键{}", primaryKey.getCloumnName());
 					log.debug("[PK_NAME]:{}", primaryKey.getPkName());
 					primaryKeys.add(primaryKey);
 				}
@@ -136,14 +148,15 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 					column.setIsNullable(rsc.getString("IS_NULLABLE"));
 					// column.setIsAutoincrement(rsc.getString("IS_AUTOINCREMENT"));
 
-					MyType type = TypeUtils.getType(column.getDataType(), column.getColumnSize(),
-							column.getDecimalDigits());
+					JdbcTypeInformation type = JdbcTypeResolver.getJdbcTypeInfomation(column.getDataType(),
+							column.getColumnSize(), column.getDecimalDigits());
+
 					column.setPropertyName(column.getColumnName().toLowerCase());
 					column.setJdbcTypeName(type.getJdbcTypeName());
 					column.setJavaClassName(type.getJavaClassName());
 					column.setJavaClassSimpleName(type.getJavaClassSimpleName());
 
-					log.debug("\n----------------------------------------列{}", column.getColumnName());
+					log.debug("\n------------------------------列{}", column.getColumnName());
 					log.debug("[TABLE_SCHEM]:{}", column.getTableSchem());
 					log.debug("[TABLE_NAME]:{}", column.getTableName());
 					log.debug("[COLUMN_NAME]:{}", column.getColumnName());
@@ -165,4 +178,5 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 			}
 		});
 	}
+
 }

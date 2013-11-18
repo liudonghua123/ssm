@@ -27,6 +27,8 @@ public class Column {
 	private String javaClassName;
 	private String javaClassSimpleName;
 
+	private boolean primaryKey = false; // 是否是主键盘，默认为false
+
 	public Column() {
 	}
 
@@ -160,6 +162,14 @@ public class Column {
 
 	public void setJavaClassSimpleName(String javaClassSimpleName) {
 		this.javaClassSimpleName = javaClassSimpleName;
+	}
+
+	public boolean isPrimaryKey() {
+		return primaryKey;
+	}
+
+	public void setPrimaryKey(boolean primaryKey) {
+		this.primaryKey = primaryKey;
 	}
 
 	@Override

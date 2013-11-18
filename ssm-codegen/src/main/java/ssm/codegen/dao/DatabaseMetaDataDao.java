@@ -16,13 +16,9 @@ import ssm.codegen.domain.Table;
  */
 public interface DatabaseMetaDataDao {
 
-	/**
-	 * 取得表集合
-	 * 
-	 * @return 表集合（List）
-	 * @throws DataAccessException
-	 */
-	List<Table> selectTables() throws DataAccessException;
+	String selectSchemaPattern() throws DataAccessException;
+
+	List<Table> selectTables(String schemaPattern) throws DataAccessException;
 
 	List<PrimaryKey> selectPrimaryKeys(String schemaPattern, String tableName) throws DataAccessException;
 

@@ -30,21 +30,27 @@ public class DatabaseMetaDataServiceImpl implements DatabaseMetaDataService {
 
 	@Override
 	public List<Table> getTables() {
-		List<Table> tables = databaseMetaDataDao.selectTables();
+		String schemaPattern = databaseMetaDataDao.selectSchemaPattern();
+		List<Table> tables = databaseMetaDataDao.selectTables(schemaPattern);
+		List<Column> columns = databaseMetaDataDao.selectColumns(schemaPattern);
 
-		List<Column> columns = databaseMetaDataDao.selectColumns(null);
 		for (Table table : tables) {
 			List<PrimaryKey> primaryKeys = databaseMetaDataDao.selectPrimaryKeys(table.getTableSchem(),
 					table.getTableName());
-			table.setPrimaryKeys(primaryKeys);
 
 			for (Column column : columns) {
-				if (table.getTableName().equals(column.getTableName())) {
+				for (PrimaryKey primaryKey : primaryKeys) {
+					if (primaryKey.getTableName().equalsIgnoreCase(column.getTableName())
+							&& primaryKey.getCloumnName().equalsIgnoreCase(column.getColumnName())) {
+						column.setPrimaryKey(true);
+					}
+				}
+				if (table.getTableName().equalsIgnoreCase(column.getTableName())) {
 					table.getColumns().add(column);
 				}
 			}
 		}
-		logger.debug("tables:={}", tables.toString());
+		logger.debug("----->tables:={}", tables.toString());
 		return tables;
 	}
 

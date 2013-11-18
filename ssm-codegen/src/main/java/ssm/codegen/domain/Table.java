@@ -12,7 +12,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @see http://technet.microsoft.com/zh-cn/library/ms378769.aspx
  */
 public class Table {
-	private String tableSchem; // 架构名
+
+	private String tableSchem;
 	/**
 	 * 表名
 	 */
@@ -29,8 +30,6 @@ public class Table {
 	 * 包含的列的集合
 	 */
 	private List<Column> columns = new ArrayList<Column>();
-
-	private List<PrimaryKey> primaryKeys = new ArrayList<PrimaryKey>();
 
 	public Table() {
 	}
@@ -77,14 +76,6 @@ public class Table {
 
 	public void setColumns(List<Column> columns) {
 		this.columns = columns;
-	}
-
-	public List<PrimaryKey> getPrimaryKeys() {
-		return primaryKeys;
-	}
-
-	public void setPrimaryKeys(List<PrimaryKey> primaryKeys) {
-		this.primaryKeys = primaryKeys;
 	}
 
 	@Override
