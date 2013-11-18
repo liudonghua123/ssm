@@ -1,4 +1,4 @@
-package ${domainPackageName};
+package ${cfg.domainPackageName};
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.HashMap;
 import java.math.BigDecimal;
 
-import ${baseDomainClassName};
+import ${cfg.baseDomainClassName};
 
 /**
- * @author ${author}
+ * @author ${cfg.author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
 public class ${table.domainClassName} extends BaseDomain<${table.domainClassName}> implements Serializable {

@@ -1,13 +1,13 @@
-package ${servicePackageName};
+package ${cfg.servicePackageName};
 
 /**
- * @author ${author}
+ * @author ${cfg.author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
 public interface Facade {
 
-<#list domainClassNames as domainClassName>
-	${domainClassName}Service get${domainClassName}Service();
+<#list tables as table>
+	${table.domainClassName}Service get${table.domainClassName}Service();
 
 </#list>
 }

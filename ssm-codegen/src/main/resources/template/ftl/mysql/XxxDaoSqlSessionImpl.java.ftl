@@ -1,13 +1,13 @@
-package ${daoSqlSessionImplPackageName};
+package ${cfg.daoSqlSessionImplPackageName};
 
 import org.springframework.stereotype.Repository;
 
-import ${ssmPackageName}.dao.impl.EntityDaoSqlSessionImpl;
-import ${daoPackageName}.${table.domainClassName}Dao;
-import ${domainPackageName}.${table.domainClassName};
+import ${cfg.ssmPackageName}.dao.impl.EntityDaoSqlSessionImpl;
+import ${cfg.daoPackageName}.${table.domainClassName}Dao;
+import ${cfg.domainPackageName}.${table.domainClassName};
 
 /**
- * @author ${author}
+ * @author ${cfg.author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
 @Repository

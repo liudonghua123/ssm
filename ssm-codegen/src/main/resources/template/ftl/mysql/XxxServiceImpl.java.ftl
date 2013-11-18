@@ -1,4 +1,4 @@
-package ${serviceImplPackageName};
+package ${cfg.serviceImplPackageName};
 
 import java.util.List;
 
@@ -6,12 +6,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ${daoPackageName}.${table.domainClassName}Dao;
-import ${domainPackageName}.${table.domainClassName};
-import ${servicePackageName}.${table.domainClassName}Service;
+import ${cfg.daoPackageName}.${table.domainClassName}Dao;
+import ${cfg.domainPackageName}.${table.domainClassName};
+import ${cfg.servicePackageName}.${table.domainClassName}Service;
 
 /**
- * @author ${author}
+ * @author ${cfg.author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
 @Service

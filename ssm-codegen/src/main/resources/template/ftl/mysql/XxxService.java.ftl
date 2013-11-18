@@ -1,11 +1,11 @@
-package ${servicePackageName};
+package ${cfg.servicePackageName};
 
 import java.util.List;
 
-import ${domainPackageName}.${table.domainClassName};
+import ${cfg.domainPackageName}.${table.domainClassName};
 
 /**
- * @author ${author}
+ * @author ${cfg.author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
 public interface ${table.domainClassName}Service {

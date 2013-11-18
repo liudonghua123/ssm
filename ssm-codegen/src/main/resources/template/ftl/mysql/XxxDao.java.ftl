@@ -1,10 +1,10 @@
-package ${daoPackageName};
+package ${cfg.daoPackageName};
 
-import ${domainPackageName}.${table.domainClassName};
-import ${ssmPackageName}.dao.EntityDao;
+import ${cfg.domainPackageName}.${table.domainClassName};
+import ${cfg.ssmPackageName}.dao.EntityDao;
 
 /**
- * @author ${author}
+ * @author ${cfg.author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
 public interface ${table.domainClassName}Dao extends EntityDao<${table.domainClassName}> {

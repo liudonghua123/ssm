@@ -2,13 +2,10 @@ package ssm.codegen.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -18,9 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ssm.codegen.config.CodeGeneratorConfig;
-import ssm.codegen.dao.DatabaseMetaDataDao;
 import ssm.codegen.domain.Table;
 import ssm.codegen.service.CodeGeneratorService;
+import ssm.codegen.service.DatabaseMetaDataService;
 import ssm.core.service.TemplateService;
 
 /**
@@ -33,7 +30,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 	private final Logger logger = LoggerFactory.getLogger(CodeGeneratorServiceImpl.class);
 
 	@Resource
-	private DatabaseMetaDataDao databaseMetaDataDao;
+	private DatabaseMetaDataService databaseMetaDataService;
 
 	@Resource
 	private TemplateService templateService;
@@ -48,34 +45,10 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
 	private void prepare() {
 		model = new HashMap<String, Object>();
+
 		model.put("now", new Date());
-
-		model.put("author", cfg.getAuthor());
-		model.put("dateFormatStyle", cfg.getDateFormatStyle());
-
-		model.put("ssmPackageName", cfg.getSsmPackageName());
-
-		model.put("getProjectPathString", cfg.getProjectPathString());
-		model.put("projectSourcePathString", cfg.getProjectSourcePathString());
-
-		model.put("projectPackageName", cfg.getProjectPackageName());
-		model.put("domainPackageName", cfg.getDomainPackageName());
-
-		model.put("daoPackageName", cfg.getDaoPackageName());
-		model.put("daoSqlSessionImplPackageName", cfg.getDaoSqlSessionImplPackageName());
-		model.put("daoJdbcImplPackageName", cfg.getDaoJdbcImplPackageName());
-		model.put("daoMyBatisMapperPackageName", cfg.getDaoMyBatisMapperPackageName());
-
-		model.put("servicePackageName", cfg.getServicePackageName());
-		model.put("serviceImplPackageName", cfg.getServiceImplPackageName());
-
-		model.put("facadePackageName", cfg.getFacadePackageName());
-		model.put("facadeImplPackageName", cfg.getFacadeImplPackageName());
-		model.put("ssmPackageName", cfg.getSsmPackageName());
-
-		model.put("baseDomainClassName", cfg.getBaseDomainClassName());
-
-		model.put("tables", databaseMetaDataDao.selectTables());
+		model.put("cfg", cfg);
+		model.put("tables", databaseMetaDataService.getTables());
 	}
 
 	private void generateFile(File file, String context, boolean overwrite) throws IOException {
@@ -241,14 +214,6 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 			this.prepare();
 		}
 
-		List<Table> tables = (List<Table>) model.get("tables");
-
-		List<String> domainClassNames = new ArrayList<String>();
-		for (Table table : tables) {
-			domainClassNames.add(table.getDomainClassName());
-		}
-		model.put("domainClassNames", domainClassNames);
-
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_FACADE), model);
 
 		this.generateFile(
@@ -266,14 +231,6 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		if (null == model) {
 			this.prepare();
 		}
-
-		List<Table> tables = (List<Table>) model.get("tables");
-
-		Set<String> domainClassNames = new HashSet<String>();
-		for (Table table : tables) {
-			domainClassNames.add(table.getDomainClassName());
-		}
-		model.put("domainClassNames", domainClassNames);
 
 		String content = templateService.getContent(cfg.getDbmsFtlFilePathString(FTL_FACADE_IMPL), model);
 

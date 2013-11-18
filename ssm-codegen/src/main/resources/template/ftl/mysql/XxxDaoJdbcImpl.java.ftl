@@ -1,4 +1,4 @@
-package ${daoJdbcImplPackageName};
+package ${cfg.daoJdbcImplPackageName};
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,11 +13,11 @@ import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.stereotype.Repository;
 
-import ${daoPackageName}.${table.domainClassName}Dao;
-import ${domainPackageName}.${table.domainClassName};
+import ${cfg.daoPackageName}.${table.domainClassName}Dao;
+import ${cfg.domainPackageName}.${table.domainClassName};
 
 /**
- * @author ${author}
+ * @author ${cfg.author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
  */
 @Repository
