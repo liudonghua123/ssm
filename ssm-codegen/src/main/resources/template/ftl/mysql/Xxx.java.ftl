@@ -18,20 +18,43 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 
 	private static final long serialVersionUID = -1L;
 
+	// ==============================Fields=====================================
 <#list table.columns as column>
-	<#if (column.columnComments)??>
+	<#if (column.remarks)??>
 	/**
-	 * ${(column.columnComments)!""}
+	 * ${(column.remarks)!""}
 	 */
 	</#if>
 	private ${column.javaClassSimpleName} ${column.propertyName};
 
 </#list>
-
+	// ------------------------------User Custom Fields------------------------
+	
+	// ==============================Constructors===============================
 	public ${table.domainClassName}() {
 
 	}
 
+<#assign params = "">	
+<#assign first = true>
+<#list table.columns as column>	
+	<#if column.primaryKey>
+	<#if !first><#assign params = params + ", "></#if>
+     <#assign params = params + column.javaClassSimpleName + " " + column.propertyName>
+	 <#assign first = false>
+  </#if>
+</#list>
+	public ${table.domainClassName}(${params}) {
+<#list table.columns as column>
+	<#if column.primaryKey>	
+		this.${column.propertyName} = ${column.propertyName};
+	</#if>
+</#list>
+	}
+	
+	// ------------------------------User Custom Constructors-------------------
+
+	// ==============================Getter and Setters=========================
 <#list table.columns as column>
 	public ${column.javaClassSimpleName} get${column.propertyName?cap_first}() {
 		return ${column.propertyName};
@@ -40,6 +63,9 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 	public void set${column.propertyName?cap_first}(${column.javaClassSimpleName} ${column.propertyName}) {
 		this.${column.propertyName} = ${column.propertyName};
 	}
-	
+
 </#list>
+
+	// ------------------------------User Custom Getter and Setters-------------
+	
 }
