@@ -10,7 +10,7 @@
 
 	<resultMap id="${table.domainClassName?uncap_first}ResultForList" type="${table.domainClassName?uncap_first}">
 		<#list table.columns as column>
-		<result column="${column.columnName}" property="${column.propertyName}" jdbcType="${column.jdbcTypeName}" />
+		<result column="${column.columnName}" property="${column.javaPropertyName}" jdbcType="${column.jdbcTypeName}" />
 		</#list>
 	</resultMap>
 
@@ -27,7 +27,7 @@
 	
 	<sql id="sf-${table.domainClassName?uncap_first}">
 		<#list table.columns as column>
-		<if test="@ssm.core.Ognl@isNotEmpty(${column.propertyName})"> and ${column.columnName} = ${r"#"}{${column.propertyName}:${column.jdbcTypeName}}</if>
+		<if test="@ssm.core.Ognl@isNotEmpty(${column.javaPropertyName})"> and ${column.columnName} = ${r"#"}{${column.javaPropertyName}:${column.jdbcTypeName}}</if>
 		</#list>
 	</sql>
 
@@ -65,13 +65,13 @@
 		<![CDATA[insert into ${table.tableName} ]]>
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<#list table.columns as column>
-			<if test="null != ${column.propertyName}">${column.columnName},</if>
+			<if test="null != ${column.javaPropertyName}">${column.columnName},</if>
 			</#list>
 		</trim>
 		<![CDATA[ values ]]>
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<#list table.columns as column>
-			<if test="null != ${column.propertyName}">${r"#"}{${column.propertyName}:${column.jdbcTypeName}},</if>
+			<if test="null != ${column.javaPropertyName}">${r"#"}{${column.javaPropertyName}:${column.jdbcTypeName}},</if>
 			</#list>
 		</trim>
 		<!--selectKey resultType="int" keyProperty="id">SELECT LAST_INSERT_ID()</selectKey-->
@@ -82,7 +82,7 @@
 		<set>
 			<#list table.columns as column>
 				<#if !column.primaryKey>
-			<if test="null != ${column.propertyName}">${column.columnName} = ${r"#"}{${column.propertyName}:${column.jdbcTypeName}},</if>
+			<if test="null != ${column.javaPropertyName}">${column.columnName} = ${r"#"}{${column.javaPropertyName}:${column.jdbcTypeName}},</if>
 				</#if>
 			</#list>
 		</set>

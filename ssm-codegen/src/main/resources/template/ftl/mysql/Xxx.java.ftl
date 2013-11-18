@@ -25,7 +25,7 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 	 * ${(column.remarks)!""}
 	 */
 	</#if>
-	private ${column.javaClassSimpleName} ${column.propertyName};
+	private ${column.javaClassSimpleName} ${column.javaPropertyName};
 
 </#list>
 	// ------------------------------User Custom Fields------------------------
@@ -40,14 +40,14 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 <#list table.columns as column>	
 	<#if column.primaryKey>
 	<#if !first><#assign params = params + ", "></#if>
-     <#assign params = params + column.javaClassSimpleName + " " + column.propertyName>
+     <#assign params = params + column.javaClassSimpleName + " " + column.javaPropertyName>
 	 <#assign first = false>
   </#if>
 </#list>
 	public ${table.domainClassName}(${params}) {
 <#list table.columns as column>
 	<#if column.primaryKey>	
-		this.${column.propertyName} = ${column.propertyName};
+		this.${column.javaPropertyName} = ${column.javaPropertyName};
 	</#if>
 </#list>
 	}
@@ -56,12 +56,12 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 
 	// ==============================Getter and Setters=========================
 <#list table.columns as column>
-	public ${column.javaClassSimpleName} get${column.propertyName?cap_first}() {
-		return ${column.propertyName};
+	public ${column.javaClassSimpleName} get${column.javaPropertyName?cap_first}() {
+		return ${column.javaPropertyName};
 	}
 
-	public void set${column.propertyName?cap_first}(${column.javaClassSimpleName} ${column.propertyName}) {
-		this.${column.propertyName} = ${column.propertyName};
+	public void set${column.javaPropertyName?cap_first}(${column.javaClassSimpleName} ${column.javaPropertyName}) {
+		this.${column.javaPropertyName} = ${column.javaPropertyName};
 	}
 
 </#list>

@@ -13,23 +13,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class Table {
 
-	private String tableSchem;
-	/**
-	 * 表名
-	 */
-	private String tableName;
-	/**
-	 * 注释
-	 */
-	private String remarks;
-	/**
-	 * 对应的领域模型名
-	 */
-	private String domainClassName;
-	/**
-	 * 包含的列的集合
-	 */
-	private List<Column> columns = new ArrayList<Column>();
+	private String tableSchem; // 表Schema
+	private String tableName; // 表名
+	private String remarks;// 表注释，有些库不提供此字段，如SQLServer, Oracle
+
+	private String domainClassName; // 对应领域模型的名称
+	private List<Column> columns = new ArrayList<Column>(); // 此表所有列
 
 	public Table() {
 	}

@@ -27,7 +27,7 @@ public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSu
 		public ${table.domainClassName} mapRow(ResultSet rs, int rowNum) throws SQLException {
 			${table.domainClassName} ${table.domainClassName?uncap_first} = new ${table.domainClassName}();
 <#list table.columns as column>
-			${table.domainClassName?uncap_first}.set${column.propertyName?cap_first}(rs.get<#if column.javaClassSimpleName?starts_with("Int")>Int<#else>${column.javaClassSimpleName}</#if>("${column.columnName}"));
+			${table.domainClassName?uncap_first}.set${column.javaPropertyName?cap_first}(rs.get<#if column.javaClassSimpleName?starts_with("Int")>Int<#else>${column.javaClassSimpleName}</#if>("${column.columnName}"));
 </#list>
 			return ${table.domainClassName?uncap_first};
 		}
@@ -38,8 +38,8 @@ public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSu
 		//like CONCAT('%', :contact, '%')"
 		
 <#list table.columns as column>	
-		if (null != t.get${column.propertyName?cap_first}() <#if column.javaClassSimpleName == "String">&& 0 != t.get${column.propertyName?cap_first}().length()</#if>) {
-			sb.append(" and ${column.propertyName}=:${column.propertyName}");
+		if (null != t.get${column.javaPropertyName?cap_first}() <#if column.javaClassSimpleName == "String">&& 0 != t.get${column.javaPropertyName?cap_first}().length()</#if>) {
+			sb.append(" and ${column.javaPropertyName}=:${column.javaPropertyName}");
 		}
 </#list>
 		return sb.toString();
@@ -62,9 +62,9 @@ public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSu
 	public Long insertEntity(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
 		sb.append("insert into ${table.tableName} ");
-		sb.append("<#list table.columns as column> ${column.propertyName}<#if column_has_next>,</#if></#list>");
+		sb.append("<#list table.columns as column> ${column.javaPropertyName}<#if column_has_next>,</#if></#list>");
 		sb.append(" values ");
-		sb.append("<#list table.columns as column>:${column.propertyName}<#if column_has_next>,</#if></#list>");
+		sb.append("<#list table.columns as column>:${column.javaPropertyName}<#if column_has_next>,</#if></#list>");
 		return super.getNamedParameterJdbcTemplate().getJdbcOperations().update(sb.toString(), new BeanPropertySqlParameterSource(t));
 	}
 
@@ -117,8 +117,8 @@ public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSu
 		StringBuffer sb = new StringBuffer();
 		
 <#list table.columns as column>	
-		if (null != t.get${column.propertyName?cap_first}() <#if column.javaClassSimpleName == "String">&& 0 != t.get${column.propertyName?cap_first}().length()</#if>) {
-			sb.append("${column.propertyName}=:${column.propertyName},");
+		if (null != t.get${column.javaPropertyName?cap_first}() <#if column.javaClassSimpleName == "String">&& 0 != t.get${column.javaPropertyName?cap_first}().length()</#if>) {
+			sb.append("${column.javaPropertyName}=:${column.javaPropertyName},");
 		}
 </#list>
 

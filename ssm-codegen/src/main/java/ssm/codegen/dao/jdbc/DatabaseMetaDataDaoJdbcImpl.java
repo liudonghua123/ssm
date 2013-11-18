@@ -28,8 +28,8 @@ import ssm.codegen.util.JdbcTypeResolver;
 import ssm.codegen.util.JdbcTypeResolver.JdbcTypeInformation;
 
 /**
- * @author Jin,QingHua
- * @version build 2008.12
+ * @author jinqinghua@gmail.com
+ * @version 2013年11月18日 下午4:50:33
  */
 @Repository
 public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements DatabaseMetaDataDao {
@@ -51,7 +51,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 				SimpleDriverDataSource simpleDriverDataSource = ((SimpleDriverDataSource) dataSource);
 				// MySQL大小写不关注
 				// Oracle必须大写
-				// SQLServer不需要
+				// SQLServer默认DBO
 				String schemaPattern = simpleDriverDataSource.getUsername().toUpperCase();
 				String url = simpleDriverDataSource.getUrl();
 
@@ -151,7 +151,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 					JdbcTypeInformation type = JdbcTypeResolver.getJdbcTypeInfomation(column.getDataType(),
 							column.getColumnSize(), column.getDecimalDigits());
 
-					column.setPropertyName(column.getColumnName().toLowerCase());
+					column.setJavaPropertyName(column.getColumnName().toLowerCase());// TODO 此名仅简单地小写了一下
 					column.setJdbcTypeName(type.getJdbcTypeName());
 					column.setJavaClassName(type.getJavaClassName());
 					column.setJavaClassSimpleName(type.getJavaClassSimpleName());
@@ -168,7 +168,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 					log.debug("[REMARKS]:{}", column.getRemarks());
 					log.debug("[COLUMN_DEF]:{}", column.getColumnDef());
 					log.debug("[IS_NULLABLE]:{}", column.getIsNullable());
-					log.debug("[IS_AUTOINCREMENT]:{}", column.getIsAutoincrement());
+					// log.debug("[IS_AUTOINCREMENT]:{}", column.getIsAutoincrement());
 
 					columns.add(column);
 				}

@@ -9,23 +9,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @see http://technet.microsoft.com/zh-cn/library/ms379048.aspx
  */
 public class Column {
-	private String tableSchem;
-	private String tableName;
-	private String columnName;
-	private int dataType;
-	private String typeName;
-	private int columnSize;
-	private int decimalDigits;
-	private int nullable;
-	private String remarks;
-	private String columnDef;
-	private String isNullable;
-	private String isAutoincrement;
+	private String tableSchem;// Schema
+	private String tableName;// 表名
+	private String columnName;// 列名
+	private int dataType;// 来自 java.sql.Types 的 SQL 数据类型
+	private String typeName;// 数据类型的名称
+	private int columnSize;// 列的精度
+	private int decimalDigits;// 列的小数位数
+	private int nullable;// 指示列是否可以为 Null可以是下列值之一：columnNoNulls (0)columnNullable (1)
+	private String remarks;// 与列关联的注释,对于此列，SQL Server 始终返回 Null
+	private String columnDef;// 列的默认值
+	private String isNullable;// 指示列是否允许 Null 值
+	private String isAutoincrement;// 如果列是自动递增的，则为“是”如果列不是自动递增的，则为“否”如果驱动程序无法确定列是否为自动递增，则为 ""（空字符串）1
 
-	private String propertyName;
-	private String jdbcTypeName;
-	private String javaClassName;
-	private String javaClassSimpleName;
+	private String jdbcTypeName;// 列对应的jdbcType名，如VARCHAR
+	private String javaPropertyName;// 列对应的java属性名，如fieldName
+	private String javaClassName;// 列对应的Java类名称, 如java.lang.String
+	private String javaClassSimpleName; // 列对应的的Java短名，如String
 
 	private boolean primaryKey = false; // 是否是主键盘，默认为false
 
@@ -132,12 +132,12 @@ public class Column {
 		this.isAutoincrement = isAutoincrement;
 	}
 
-	public String getPropertyName() {
-		return propertyName;
+	public String getJavaPropertyName() {
+		return javaPropertyName;
 	}
 
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
+	public void setJavaPropertyName(String javaPropertyName) {
+		this.javaPropertyName = javaPropertyName;
 	}
 
 	public String getJdbcTypeName() {

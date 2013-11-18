@@ -3,6 +3,7 @@ package ssm.codegen.domain;
 /**
  * @author Jin,QingHua
  * @version build 2013.11
+ * @deprecated 用SQL取表不通用，但取注释有的必须用SQL，留着以后再看吧
  */
 public enum DbType {
 	/* MYSQL */
