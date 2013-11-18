@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
- * @author ${cfg.author}
+<!-- @author ${cfg.author} -->
 <!-- @version ${now?string("yyyy-MM-dd HH:mm:ss")} -->
 <mapper namespace="${table.domainClassName}">
 
@@ -65,13 +65,13 @@
 		<![CDATA[insert into ${table.tableName} ]]>
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<#list table.columns as column>
-			<if test="@ssm.core.Ognl@isNotEmpty(${column.propertyName})">${column.columnName},</if>
+			<if test="null != ${column.propertyName}">${column.columnName},</if>
 			</#list>
 		</trim>
 		<![CDATA[ values ]]>
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<#list table.columns as column>
-			<if test="@ssm.core.Ognl@isNotEmpty(${column.propertyName})">${r"#"}{${column.propertyName}:${column.jdbcTypeName}},</if>
+			<if test="null != ${column.propertyName}">${r"#"}{${column.propertyName}:${column.jdbcTypeName}},</if>
 			</#list>
 		</trim>
 		<!--selectKey resultType="int" keyProperty="id">SELECT LAST_INSERT_ID()</selectKey-->
@@ -81,7 +81,9 @@
 		update ${table.tableName}
 		<set>
 			<#list table.columns as column>
-			<if test="@ssm.core.Ognl@isNotEmpty(${column.propertyName})">${column.columnName} = ${r"#"}{${column.propertyName}:${column.jdbcTypeName}},</if>
+				<#if !column.primaryKey>
+			<if test="null != ${column.propertyName}">${column.columnName} = ${r"#"}{${column.propertyName}:${column.jdbcTypeName}},</if>
+				</#if>
 			</#list>
 		</set>
 		where ID = ${r"#"}{id:BIGINT}
