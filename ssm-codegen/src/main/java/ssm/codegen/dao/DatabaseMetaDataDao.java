@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
+import ssm.codegen.domain.Column;
+import ssm.codegen.domain.PrimaryKey;
 import ssm.codegen.domain.Table;
 
 /**
@@ -21,4 +23,8 @@ public interface DatabaseMetaDataDao {
 	 * @throws DataAccessException
 	 */
 	List<Table> selectTables() throws DataAccessException;
+
+	List<PrimaryKey> selectPrimaryKeys(String schemaPattern, String tableName) throws DataAccessException;
+
+	List<Column> selectColumns(String schemaPattern) throws DataAccessException;
 }

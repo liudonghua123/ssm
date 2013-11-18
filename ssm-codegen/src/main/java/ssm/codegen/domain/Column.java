@@ -5,10 +5,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author jinqinghua@gmail.com
- * @version 2013.11.15
+ * @version 2013年11月18日 上午11:21:52
+ * @see http://technet.microsoft.com/zh-cn/library/ms379048.aspx
  */
 public class Column {
-
+	private String tableSchem;
+	private String tableName;
 	private String columnName;
 	private int dataType;
 	private String typeName;
@@ -26,6 +28,22 @@ public class Column {
 	private String javaClassSimpleName;
 
 	public Column() {
+	}
+
+	public String getTableSchem() {
+		return tableSchem;
+	}
+
+	public void setTableSchem(String tableSchem) {
+		this.tableSchem = tableSchem;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 
 	public Column(String name) {

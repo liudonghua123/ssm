@@ -8,9 +8,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author jinqinghua@gmail.com
- * @version 2013.11.15
+ * @version 2013年11月18日 上午11:21:11
+ * @see http://technet.microsoft.com/zh-cn/library/ms378769.aspx
  */
 public class Table {
+	private String tableSchem; // 架构名
 	/**
 	 * 表名
 	 */
@@ -28,11 +30,21 @@ public class Table {
 	 */
 	private List<Column> columns = new ArrayList<Column>();
 
+	private List<PrimaryKey> primaryKeys = new ArrayList<PrimaryKey>();
+
 	public Table() {
 	}
 
 	public Table(String name) {
 		this.tableName = name;
+	}
+
+	public String getTableSchem() {
+		return tableSchem;
+	}
+
+	public void setTableSchem(String tableSchem) {
+		this.tableSchem = tableSchem;
 	}
 
 	public String getTableName() {
@@ -65,6 +77,14 @@ public class Table {
 
 	public void setColumns(List<Column> columns) {
 		this.columns = columns;
+	}
+
+	public List<PrimaryKey> getPrimaryKeys() {
+		return primaryKeys;
+	}
+
+	public void setPrimaryKeys(List<PrimaryKey> primaryKeys) {
+		this.primaryKeys = primaryKeys;
 	}
 
 	@Override
