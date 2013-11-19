@@ -1,10 +1,10 @@
-package ${cfg.serviceImplPackageName};
+package ${cfg.facadeImplPackageName};
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import ${cfg.servicePackageName}.Facade;
+import ${cfg.facadePackageName}.Facade;
 <#list tables as table>
 import ${cfg.servicePackageName}.${table.domainClassName}Service;
 </#list>

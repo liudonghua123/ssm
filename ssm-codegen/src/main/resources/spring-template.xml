@@ -6,7 +6,7 @@
 
 	<!--bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer" -->
 	<bean id="freeMarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
-		<property name="templateLoaderPath" value="classpath:template/ftl" />
+		<property name="templateLoaderPath" value="classpath:template/ftl/mybatis" />
 		<property name="freemarkerSettings">
 			<props>
 				<prop key="template_update_delay">0</prop>

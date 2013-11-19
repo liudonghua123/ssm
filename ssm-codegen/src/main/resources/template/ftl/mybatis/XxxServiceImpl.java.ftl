@@ -28,7 +28,7 @@ public class ${table.domainClassName}ServiceImpl implements ${table.domainClassN
 	@Override
 	public Long create${table.domainClassName}(${table.domainClassName} t) {
 		this.${table.domainClassName?uncap_first}Dao.insertEntity(t);
-		return t.getId(); //注意MyBatis的insert和iBATIS不同！
+		return t.getId(); // NOTE:MyBatis is different with iBATIS
 	}
 	
 	@Override

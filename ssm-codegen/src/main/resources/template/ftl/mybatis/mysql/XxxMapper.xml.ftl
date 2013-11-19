@@ -4,9 +4,10 @@
 
 <!-- @author ${cfg.author} -->
 <!-- @version ${now?string("yyyy-MM-dd HH:mm:ss")} -->
+<!-- MySQL -->
 <mapper namespace="${table.domainClassName}">
 
-	<!--cache /-->
+	<cache />
 
 	<resultMap id="${table.domainClassName?uncap_first}ResultForList" type="${table.domainClassName?uncap_first}">
 		<#list table.columns as column>
@@ -43,7 +44,7 @@
 		<where>
 			<include refid="sf-${table.domainClassName?uncap_first}" />
 		</where>
-		<!-- order by ID asc -->
+
 		<if test="_rowBounds.limit != null">
 			<if test="_rowBounds.offset != null">
 				limit ${r"#"}{_rowBounds.offset}, ${r"#"}{_rowBounds.limit}
@@ -74,7 +75,6 @@
 			<if test="null != ${column.javaPropertyName}">${r"#"}{${column.javaPropertyName}:${column.jdbcTypeName}},</if>
 			</#list>
 		</trim>
-		<!--selectKey resultType="int" keyProperty="id">SELECT LAST_INSERT_ID()</selectKey-->
 	</insert>
 
 	<update id="update${table.domainClassName}" parameterType="${table.domainClassName?uncap_first}">

@@ -1,4 +1,4 @@
-package ${cfg.domainPackageName};
+package ${cfg.domainPackageName}.table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,12 +13,12 @@ import ${cfg.baseDomainClassName};
 /**
  * @author ${cfg.author}
  * @version ${now?string("yyyy-MM-dd HH:mm:ss")}
+ * Class created from table
  */
-public class ${table.domainClassName} extends BaseDomain<${table.domainClassName}> implements Serializable {
+public class ${table.domainClassName}Table extends BaseDomain {
 
 	private static final long serialVersionUID = ${uuid?c}L;
-
-	// ==============================Fields=====================================
+	
 <#list table.columns as column>
 	<#if (column.remarks)??>
 	/**
@@ -28,10 +28,9 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 	private ${column.javaClassSimpleName} ${column.javaPropertyName};
 
 </#list>
-	// ------------------------------User Custom Fields------------------------
 	
 	// ==============================Constructors===============================
-	public ${table.domainClassName}() {
+	public ${table.domainClassName}Table() {
 
 	}
 
@@ -44,7 +43,7 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 	 <#assign first = false>
   </#if>
 </#list>
-	public ${table.domainClassName}(${params}) {
+	public ${table.domainClassName}Table(${params}) {
 <#list table.columns as column>
 	<#if column.primaryKey>	
 		this.${column.javaPropertyName} = ${column.javaPropertyName};
@@ -52,8 +51,6 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 </#list>
 	}
 	
-	// ------------------------------User Custom Constructors-------------------
-
 	// ==============================Getter and Setters=========================
 <#list table.columns as column>
 	public ${column.javaClassSimpleName} get${column.javaPropertyName?cap_first}() {
@@ -65,7 +62,4 @@ public class ${table.domainClassName} extends BaseDomain<${table.domainClassName
 	}
 
 </#list>
-
-	// ------------------------------User Custom Getter and Setters-------------
-	
 }

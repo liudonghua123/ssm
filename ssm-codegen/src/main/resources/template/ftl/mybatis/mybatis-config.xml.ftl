@@ -19,7 +19,7 @@
 
 	<!-- http://www.mybatis.org/core/zh/configuration.html#settings -->
 	<settings>
-		<setting name="cacheEnabled" value="false" />
+		<setting name="cacheEnabled" value="true" />
 		<setting name="lazyLoadingEnabled" value="false" />
 		<setting name="aggressiveLazyLoading" value="true" />
 		<setting name="multipleResultSetsEnabled" value="true" />

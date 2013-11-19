@@ -1,4 +1,8 @@
-package ${cfg.servicePackageName};
+package ${cfg.facadePackageName};
+
+<#list tables as table>
+import ${cfg.servicePackageName}.${table.domainClassName}Service;
+</#list>
 
 /**
  * @author ${cfg.author}

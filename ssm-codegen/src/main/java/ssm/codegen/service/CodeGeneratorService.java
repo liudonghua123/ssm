@@ -13,10 +13,11 @@ public interface CodeGeneratorService {
 
 	String FTL_MYBATIS_CONFIG = "mybatis-config.xml.ftl";
 	String FTL_DOMAIN = "/Xxx.java.ftl";
+	String FTL_DOMAIN_TABLE = "/XxxTable.java.ftl";
 	String FTL_DAO = "XxxDao.java.ftl";
 	String FTL_DAO_SQLSESSION_IMPL = "XxxDaoSqlSessionImpl.java.ftl";
 	String FTL_DAO_JDBC_IMPL = "XxxDaoJdbcImpl.java.ftl";
-	String FTL_DAO_MYBATIS_MAPPER = "XxxDaoMyBatisMapper.xml.ftl";
+	String FTL_DAO_MYBATIS_MAPPER = "XxxMapper.xml.ftl";
 	String FTL_SERVICE = "XxxService.java.ftl";
 	String FTL_SERVICE_IMPL = "XxxServiceImpl.java.ftl";
 	String FTL_FACADE = "Facade.java.ftl";

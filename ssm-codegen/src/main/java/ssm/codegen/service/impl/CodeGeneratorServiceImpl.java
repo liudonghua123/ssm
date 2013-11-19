@@ -78,7 +78,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		this.prepareDataModel();
 
 		File file = new File(cfg.getProjectResourcePath(), convertFtlToFile(FTL_MYBATIS_CONFIG, ""));
-		String content = templateService.getContent(cfg.getFtlFilePathName(FTL_MYBATIS_CONFIG), model);
+		String content = templateService.getContent(FTL_MYBATIS_CONFIG, model);
 		this.generateFile(file, content, true);
 	}
 
@@ -92,7 +92,12 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 			model.put("uuid", UUID.randomUUID().getLeastSignificantBits());// 为domain类增加serialVersionUID
 			File file = new File(cfg.convertPackageNameToPath(cfg.getDomainPackageName()), convertFtlToFile(FTL_DOMAIN,
 					table.getDomainClassName()));
-			String content = templateService.getContent(cfg.getFtlFilePathName(FTL_DOMAIN), model);
+			String content = templateService.getContent(FTL_DOMAIN, model);
+			this.generateFile(file, content, true);
+
+			file = new File(cfg.convertPackageNameToPath(cfg.getDomainPackageName() + ".table"), convertFtlToFile(
+					FTL_DOMAIN_TABLE, table.getDomainClassName()));
+			content = templateService.getContent(FTL_DOMAIN_TABLE, model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -107,7 +112,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
 			File file = new File(cfg.convertPackageNameToPath(cfg.getDaoPackageName()), convertFtlToFile(FTL_DAO,
 					table.getDomainClassName()));
-			String content = templateService.getContent(cfg.getFtlFilePathName(FTL_DAO), model);
+			String content = templateService.getContent(FTL_DAO, model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -122,7 +127,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
 			File file = new File(cfg.convertPackageNameToPath(cfg.getDaoSqlSessionImplPackageName()), convertFtlToFile(
 					FTL_DAO_SQLSESSION_IMPL, table.getDomainClassName()));
-			String content = templateService.getContent(cfg.getFtlFilePathName(FTL_DAO_SQLSESSION_IMPL), model);
+			String content = templateService.getContent(FTL_DAO_SQLSESSION_IMPL, model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -137,7 +142,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
 			File file = new File(cfg.convertPackageNameToPath(cfg.getDaoJdbcImplPackageName()), convertFtlToFile(
 					FTL_DAO_JDBC_IMPL, table.getDomainClassName()));
-			String content = templateService.getContent(cfg.getFtlFilePathName(FTL_DAO_JDBC_IMPL), model);
+			String content = templateService.getContent(FTL_DAO_JDBC_IMPL, model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -168,7 +173,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
 			File file = new File(cfg.convertPackageNameToPath(cfg.getServicePackageName()), convertFtlToFile(
 					FTL_SERVICE, table.getDomainClassName()));
-			String content = templateService.getContent(cfg.getFtlFilePathName(FTL_SERVICE), model);
+			String content = templateService.getContent(FTL_SERVICE, model);
 			this.generateFile(file, content, false);
 		}
 	}
@@ -183,7 +188,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
 			File file = new File(cfg.convertPackageNameToPath(cfg.getServiceImplPackageName()), convertFtlToFile(
 					FTL_SERVICE_IMPL, table.getDomainClassName()));
-			String content = templateService.getContent(cfg.getFtlFilePathName(FTL_SERVICE_IMPL), model);
+			String content = templateService.getContent(FTL_SERVICE_IMPL, model);
 			this.generateFile(file, content, false);
 		}
 
@@ -199,7 +204,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		this.prepareDataModel();
 
 		File file = new File(cfg.convertPackageNameToPath(cfg.getFacadePackageName()), convertFtlToFile(FTL_FACADE, ""));
-		String content = templateService.getContent(cfg.getFtlFilePathName(FTL_FACADE), model);
+		String content = templateService.getContent(FTL_FACADE, model);
 		this.generateFile(file, content, false);
 
 	}
@@ -215,7 +220,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
 		File file = new File(cfg.convertPackageNameToPath(cfg.getFacadeImplPackageName()), convertFtlToFile(
 				FTL_FACADE_IMPL, ""));
-		String content = templateService.getContent(cfg.getFtlFilePathName(FTL_FACADE_IMPL), model);
+		String content = templateService.getContent(FTL_FACADE_IMPL, model);
 		this.generateFile(file, content, false);
 	}
 }
