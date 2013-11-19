@@ -16,7 +16,7 @@ import ${cfg.baseDomainClassName};
  */
 public class ${table.domainClassName} extends BaseDomain<${table.domainClassName}> implements Serializable {
 
-	private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = ${uuid?c}L;
 
 	// ==============================Fields=====================================
 <#list table.columns as column>

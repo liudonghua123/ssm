@@ -1,3 +1,5 @@
+package test.java.lang;
+
 import org.junit.Test;
 
 public class ClassTest {
