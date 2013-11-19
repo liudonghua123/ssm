@@ -45,6 +45,7 @@ public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSu
 		return sb.toString();
 	}
 
+	@Override
 	public int deleteEntity(${table.domainClassName} t) throws DataAccessException {
 		if (null != t.getId()) {// deleteById
 			return super.getNamedParameterJdbcTemplate().getJdbcOperations().update("delete from ${table.tableName} where id=?", t.getId());
@@ -59,7 +60,8 @@ public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSu
 		}
 	}
 
-	public Long insertEntity(${table.domainClassName} t) throws DataAccessException {
+	@Override
+	public int insertEntity(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
 		sb.append("insert into ${table.tableName} ");
 		sb.append("<#list table.columns as column> ${column.javaPropertyName}<#if column_has_next>,</#if></#list>");
@@ -68,6 +70,7 @@ public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSu
 		return super.getNamedParameterJdbcTemplate().getJdbcOperations().update(sb.toString(), new BeanPropertySqlParameterSource(t));
 	}
 
+	@Override
 	public ${table.domainClassName} selectEntity(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
 		sb.append("select * from ${table.tableName} where 1=1 ");
@@ -84,42 +87,41 @@ public class ${table.domainClassName}DaoJdbcImpl extends NamedParameterJdbcDaoSu
 		}
 	}
 
+	@Override
 	public Long selectEntityCount(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
 		sb.append("select count(*) from ${table.tableName} where 1=1");
 		sb.append(this.getConditionSql(t));
-		return super.getNamedParameterJdbcTemplate().getJdbcOperations().queryForInt(sb.toString(), new BeanPropertySqlParameterSource(t));
+		return super.getNamedParameterJdbcTemplate().queryForObject(sb.toString(), new BeanPropertySqlParameterSource(t), Long.class);
 	}
 
+	@Override
 	public List<${table.domainClassName}> selectEntityList(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
 		sb.append("select * from ${table.tableName} where 1=1");
 		sb.append(this.getConditionSql(t));
 		//sb.append(" order by id desc");
+		if (t.get_rowBounds().getLimit() != null) {
+			if (t.get_rowBounds().getOffset() != null) {
+				sb.append(" limit " + t.get_rowBounds().getLimit() + "," + t.get_rowBounds().getOffset());
+			} else {
+				sb.append(" limit 0, " + t.get_rowBounds().getOffset());
+			}
+		}
 		return super.getNamedParameterJdbcTemplate().getJdbcOperations().query(sb.toString(), rowMapperForList,
 				new BeanPropertySqlParameterSource(t));
 	}
 
-	public List<${table.domainClassName}> selectEntityPaginatedList(${table.domainClassName} t) throws DataAccessException {
-		StringBuffer sb = new StringBuffer();
-		sb.append("select * from ${table.tableName} where 1=1");
-		sb.append(this.getConditionSql(t));
-		//sb.append(" order by id desc");
-		sb.append(" limit ");
-		sb.append(t.get_rowBounds().getOffset());
-		sb.append(",");
-		sb.append(t.get_rowBounds().getLimit());
-		return super.getNamedParameterJdbcTemplate().getJdbcOperations().query(sb.toString(), rowMapperForList,
-				new BeanPropertySqlParameterSource(t));
-	}
-
+	@Override
 	public int updateEntity(${table.domainClassName} t) throws DataAccessException {
 		StringBuffer sb = new StringBuffer();
 		
-<#list table.columns as column>	
+<#list table.columns as column>
+	<#if !column.primaryKey>
 		if (null != t.get${column.javaPropertyName?cap_first}() <#if column.javaClassSimpleName == "String">&& 0 != t.get${column.javaPropertyName?cap_first}().length()</#if>) {
 			sb.append("${column.javaPropertyName}=:${column.javaPropertyName},");
 		}
+	</#if>
 </#list>
 
 		String sqlCondition = sb.toString();
