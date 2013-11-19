@@ -117,7 +117,7 @@ public class CodeGeneratorConfig {
 	 * 
 	 */
 	public File getProjectSourcePath() {
-		switch (ProjectType.valueOf(this.projectTypeName)) {
+		switch (ProjectType.valueOf(this.projectTypeName.toUpperCase())) {
 		case MAVEN:
 			return new File(this.mavenProjectJavaPathName);
 		case ECLIPSE:
@@ -130,7 +130,7 @@ public class CodeGeneratorConfig {
 	 * 获取项目resources目录的绝对地址
 	 */
 	public File getProjectResourcePath() {
-		switch (ProjectType.valueOf(this.projectTypeName)) {
+		switch (ProjectType.valueOf(this.projectTypeName.toUpperCase())) {
 		case MAVEN:
 			return new File(this.mavenProjectResourcesPathName);
 		case ECLIPSE:
@@ -143,7 +143,7 @@ public class CodeGeneratorConfig {
 	 * 获取项目webapp|WebContent目录的绝对地址
 	 */
 	public File getProjectWebappPath() {
-		switch (ProjectType.valueOf(this.projectTypeName)) {
+		switch (ProjectType.valueOf(this.projectTypeName.toUpperCase())) {
 		case MAVEN:
 			return new File(this.mavenProjectWebappPathName);
 		case ECLIPSE:
