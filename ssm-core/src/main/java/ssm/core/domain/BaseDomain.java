@@ -2,7 +2,6 @@ package ssm.core.domain;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -11,14 +10,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import ssm.core.domain.support.RowBounds;
 
 /**
- * 域模型(Domain)基数，提供了一个用于分页的row, 方便的map, 用于树结构的childen
+ * 域模型(Domain)基数，提供了一个用于分页的_rowBounds, 方便的_map
  * 
  * @author jinqinghua@gmail.com
  * @version 2012/08/04
  * @param <E>
  *            域模型(Domain), children集合中元素的类型在此定义
  */
-public abstract class BaseDomain<E> implements Serializable {
+public abstract class BaseDomain implements Serializable {
 
 	private static final long serialVersionUID = 2835098506064719597L;
 
@@ -33,11 +32,6 @@ public abstract class BaseDomain<E> implements Serializable {
 	 * Map<String, Object> 对象
 	 */
 	private Map<String, Object> _map;
-
-	/**
-	 * 用于自省的树结构
-	 */
-	private List<E> _children;
 
 	public BaseDomain() {
 		_rowBounds = new RowBounds();
@@ -58,14 +52,6 @@ public abstract class BaseDomain<E> implements Serializable {
 
 	public void set_map(Map<String, Object> _map) {
 		this._map = _map;
-	}
-
-	public List<E> get_children() {
-		return _children;
-	}
-
-	public void set_children(List<E> _children) {
-		this._children = _children;
 	}
 
 	@Override
