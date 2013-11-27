@@ -19,7 +19,7 @@
 
 	<bean id="propertiesConfiguration" class="org.apache.commons.configuration.PropertiesConfiguration">
 		<constructor-arg index="0">
-			<value>cfg-partx.properties</value>
+			<value>cfg.properties</value>
 		</constructor-arg>
 	</bean>
 
@@ -31,7 +31,7 @@
 	</bean>
 
 	<beans profile="production,test">
-		<context:property-placeholder ignore-resource-not-found="true" location="classpath*:/cfg-partx.properties" />
+		<context:property-placeholder ignore-resource-not-found="true" location="classpath*:/cfg.properties" />
 
 		<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> -->
 		<!-- <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close"> -->
