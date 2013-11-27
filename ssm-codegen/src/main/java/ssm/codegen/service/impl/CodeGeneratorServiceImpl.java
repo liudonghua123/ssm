@@ -82,6 +82,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		this.generateFile(file, content, true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void generateDomainFiles() throws IOException {
 		this.prepareDataModel();
@@ -102,6 +103,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void generateDaoFiles() throws IOException {
 		this.prepareDataModel();
@@ -117,6 +119,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void generateDaoSqlSessionImplFiles() throws IOException {
 		this.prepareDataModel();
@@ -132,6 +135,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void generateDaoJdbcImplFiles() throws IOException {
 		this.prepareDataModel();
@@ -147,6 +151,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void generateDaoMyBatisMapperFiles() throws IOException {
 		this.prepareDataModel();
@@ -163,6 +168,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void generateServiceFiles() throws IOException {
 		this.prepareDataModel();
@@ -178,6 +184,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void generateServiceImplFiles() throws IOException {
 		this.prepareDataModel();

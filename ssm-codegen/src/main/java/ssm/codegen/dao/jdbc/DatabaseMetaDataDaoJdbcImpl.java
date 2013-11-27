@@ -63,6 +63,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Table> selectTables(final String schemaPattern) throws DataAccessException {
 		return (List<Table>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
@@ -94,6 +95,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<PrimaryKey> selectPrimaryKeys(final String schemaPattern, final String tableName)
 			throws DataAccessException {
@@ -123,6 +125,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Column> selectColumns(final String schemaPattern) throws DataAccessException {
 		return (List<Column>) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
