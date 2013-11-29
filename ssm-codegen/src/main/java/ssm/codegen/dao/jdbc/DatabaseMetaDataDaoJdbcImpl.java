@@ -111,9 +111,9 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 					PrimaryKey primaryKey = new PrimaryKey();
 					primaryKey.setTableSchem(rspk.getString("TABLE_SCHEM"));
 					primaryKey.setTableName(rspk.getString("TABLE_NAME").toUpperCase());
-					primaryKey.setCloumnName(rspk.getString("COLUMN_NAME").toUpperCase());
+					primaryKey.setColumnName(rspk.getString("COLUMN_NAME").toUpperCase());
 					primaryKey.setPkName(rspk.getString("PK_NAME").toUpperCase());
-					log.debug("\n------------------------------主键{}", primaryKey.getCloumnName());
+					log.debug("\n------------------------------主键{}", primaryKey.getColumnName());
 					log.debug("[PK_NAME]:{}", primaryKey.getPkName());
 					primaryKeys.add(primaryKey);
 				}

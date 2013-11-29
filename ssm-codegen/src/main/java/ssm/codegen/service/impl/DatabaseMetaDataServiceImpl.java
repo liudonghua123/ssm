@@ -41,7 +41,7 @@ public class DatabaseMetaDataServiceImpl implements DatabaseMetaDataService {
 			for (Column column : columns) {
 				for (PrimaryKey primaryKey : primaryKeys) {
 					if (primaryKey.getTableName().equalsIgnoreCase(column.getTableName())
-							&& primaryKey.getCloumnName().equalsIgnoreCase(column.getColumnName())) {
+							&& primaryKey.getColumnName().equalsIgnoreCase(column.getColumnName())) {
 						column.setPrimaryKey(true);
 					}
 				}
