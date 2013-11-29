@@ -2,103 +2,95 @@ package ssm.codegen.config;
 
 import java.io.File;
 
-import javax.annotation.Resource;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import ssm.codegen.domain.type.DbType;
 import ssm.codegen.domain.type.ProjectType;
 
 /**
- * @author Jin,QingHua
- * @version build 2008.12
+ * @author jinqinghua@gmail.com
+ * @version 2013年11月29日 下午9:25:18
  */
+@Component
 public class CodeGeneratorConfig {
 
 	private final Logger logger = LoggerFactory.getLogger(CodeGeneratorConfig.class);
 
-	@Resource(name = "propertiesConfiguration")
-	private PropertiesConfiguration cfg;
+	// ==============================固定配置==============================
+	private final String author = "jinqinghua@gmail.com";
+	private final String dateFormatStyle = "yyyy-MM-dd HH:mm:ss";
 
-	private String author = "jinqinghua@gmail.com";
-	private String dateFormatStyle = "yyyy-MM-dd HH:mm:ss";
-
+	// ==============================项目类型=============================
+	@Value("${cfg.type.project:Maven}")
 	private String projectTypeName;// MAVEN|ECLIPSE
+
+	@Value("${jdbc.url}")
 	private String jdbcUrl;
 
-	// private String databaseProductName; // 数据库ORACLE|MYSQL|MSSQLSERVER|DB2
+	@Value("${cfg.path.project}")
 	private String projectPathName; // 项目根目录（生成文件的目录）
 
+	// ==============================Maven项目相关配置==============================
+	@Value("${cfg.path.project.maven.java}")
 	private String mavenProjectJavaPathName;
+
+	@Value("${cfg.path.project.maven.resources}")
 	private String mavenProjectResourcesPathName;
+
+	@Value("${cfg.path.project.maven.webapp}")
 	private String mavenProjectWebappPathName;
 
+	// ==============================Eclipse项目相关配置==============================
+	@Value("${cfg.path.project.eclipse.src}")
 	private String eclipseProjectSrcPathName;
+
+	@Value("${cfg.path.project.eclipse.WebContent}")
 	private String eclipseProjectWebContentPathName;
 
-	private String projectPackageName; // 项目包，一般是com.company.project
+	// ==============================Package相关配置==============================
+	@Value("${cfg.package.project}")
+	private String projectPackageName; // 项目包名，一般是com.company.project
+
+	@Value("${cfg.package.domain}")
 	private String domainPackageName;
+
+	@Value("${cfg.package.dao}")
 	private String daoPackageName;
+
+	@Value("${cfg.package.daoJdbcImpl}")
 	private String daoJdbcImplPackageName;
+
+	@Value("${cfg.package.daoSqlSessionImpl}")
 	private String daoSqlSessionImplPackageName;
+
+	@Value("${cfg.package.daoMyBatisMapper}")
 	private String daoMyBatisMapperPackageName;
+
+	@Value("${cfg.package.service}")
 	private String servicePackageName;
+
+	@Value("${cfg.package.serviceImpl}")
 	private String serviceImplPackageName;
+
+	@Value("${cfg.package.facade}")
 	private String facadePackageName;
+
+	@Value("${cfg.package.facadeImpl}")
 	private String facadeImplPackageName;
 
+	// ==============================SSM相关配置==============================
+	@Value("${cfg.package.ssm}")
 	private String ssmPackageName;
-	private String baseDomainClassName;
 
-	// private String tableNameSqlConditions; // 过滤表名的SQL条件
+	@Value("${cfg.class.baseDomain}")
+	private String baseDomainClassName;
 
 	public CodeGeneratorConfig() {
 		logger.debug("CodeGeneratorConfig Construct...");
-	}
-
-	public void init() throws ConfigurationException {
-		logger.debug("CodeGeneratorConfig Init...");
-
-		// this.author = cfg.getString("cfg.author");
-		// this.dateFormatStyle = cfg.getString("cfg.dateFormatStyle");
-		this.projectTypeName = cfg.getString("cfg.type.project");
-		this.jdbcUrl = cfg.getString("jdbc.url");
-
-		// PATH
-		this.projectPathName = cfg.getString("cfg.path.project");
-
-		this.mavenProjectJavaPathName = cfg.getString("cfg.path.project.maven.java");
-		this.mavenProjectResourcesPathName = cfg.getString("cfg.path.project.maven.resources");
-		this.mavenProjectWebappPathName = cfg.getString("cfg.path.project.maven.webapp");
-
-		this.eclipseProjectSrcPathName = cfg.getString("cfg.path.project.eclipse.src");
-		this.eclipseProjectWebContentPathName = cfg.getString("cfg.path.project.eclipse.WebContent");
-
-		// PACKAGE
-		this.projectPackageName = cfg.getString("cfg.package.project");
-		this.domainPackageName = cfg.getString("cfg.package.domain");
-
-		this.daoPackageName = cfg.getString("cfg.package.dao");
-		this.daoJdbcImplPackageName = cfg.getString("cfg.package.daoJdbcImpl");
-		this.daoSqlSessionImplPackageName = cfg.getString("cfg.package.daoSqlSessionImpl");
-		this.daoMyBatisMapperPackageName = cfg.getString("cfg.package.daoMyBatisMapper");
-
-		this.servicePackageName = cfg.getString("cfg.package.service");
-		this.serviceImplPackageName = cfg.getString("cfg.package.serviceImpl");
-
-		this.facadePackageName = cfg.getString("cfg.package.facade");
-		this.facadeImplPackageName = cfg.getString("cfg.package.facadeImpl");
-
-		this.ssmPackageName = cfg.getString("cfg.package.ssm");
-		// CLASS
-		this.baseDomainClassName = cfg.getString("cfg.class.baseDomain");
-		// SQL
-		// this.tableNameSqlConditions = cfg.getString("sql.tablename.conditions");
-		// logger.info("tableNameSqlConditions:{}", tableNameSqlConditions);
 	}
 
 	/**
@@ -165,7 +157,7 @@ public class CodeGeneratorConfig {
 		return null;
 	}
 
-	// ==============================Getter and Setters=========================
+	// ==============================Getters=========================
 	public String getAuthor() {
 		return author;
 	}

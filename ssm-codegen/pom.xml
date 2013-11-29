@@ -33,18 +33,12 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
-			<version>4.0</version>
-			<scope>runtime</scope>
 		</dependency>
 
 		<!-- COMMONS -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -1,8 +1,9 @@
 package ssm.codegen.domain.type;
 
 /**
- * @author jinqinghua@gmail.com
+ * 目前这个类用不着了
  * 
+ * @author jinqinghua@gmail.com
  * @version 2013年11月18日 下午10:03:41
  */
 public enum DbType {

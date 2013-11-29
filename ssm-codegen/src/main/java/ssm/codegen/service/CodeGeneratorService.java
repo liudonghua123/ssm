@@ -3,8 +3,8 @@ package ssm.codegen.service;
 import java.io.IOException;
 
 /**
- * @author Jin,QingHua
- * @version build 2008.12
+ * @author jinqinghua@gmail.com
+ * @version 2013年11月29日 下午9:32:11
  */
 public interface CodeGeneratorService {
 

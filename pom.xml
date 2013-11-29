@@ -52,6 +52,9 @@
 	</scm>
 
 	<!-- ==========以下部分每个项目都一样，并定期更新========== -->
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
 
 	<distributionManagement>
 		<repository>
@@ -65,6 +68,10 @@
 	</distributionManagement>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jdk.version>1.6</jdk.version>
+		<!-- <java.home>D:\Java\jdk\jdk1.6.0</java.home> -->
+
 		<!-- LOG -->
 		<slf4j-api.version>1.7.5</slf4j-api.version>
 		<logback.version>1.0.13</logback.version>
@@ -95,7 +102,7 @@
 		<ognl.version>3.0.8</ognl.version>
 		<javassist.version>3.18.1-GA</javassist.version>
 		<cglib.version>3.0</cglib.version>
-		<aspectjweaver.version>1.7.4</aspectjweaver.version>
+		<aspectj.version>1.7.4</aspectj.version>
 
 		<!-- APACHE COMMONS -->
 		<commons-beanutils.version>1.8.3</commons-beanutils.version>
@@ -113,13 +120,13 @@
 		<commons-validator.version>1.4.0</commons-validator.version>
 
 		<!-- UTILS.EXCEL -->
-		<poi.version>3.9.0</poi.version>
+		<poi.version>3.9</poi.version>
 
 		<!-- UTILS.HTTPCLIENT -->
 		<httpclient.version>4.3.1</httpclient.version>
 
 		<!-- UTILS.CACHE -->
-		<ehcache.version>2.7.4</ehcache.version>
+		<ehcache.version>2.6.6</ehcache.version>
 		<oscache.version>2.4.1</oscache.version>
 
 		<!-- UTILS.DATETIME -->
@@ -130,48 +137,54 @@
 		<freemarker.version>2.3.20</freemarker.version>
 
 		<!-- UTILS.JSON -->
-		<jackson.version>2.1.5</jackson.version>
+		<jackson.version>2.3.0</jackson.version>
 		<fastjson.version>1.1.37</fastjson.version>
 
-		<guava.version>14.0.1</guava.version>
+		<!-- UTILS.OBJECT AND COLLECTIONS -->
+		<guava.version>15.0</guava.version>
 		<dozer.version>5.4.0</dozer.version>
 
 		<!-- UTILS.MAIL -->
 		<mail.version>1.4.7</mail.version>
 
-		<!-- UTILS.SCHEDULER -->
+		<!-- UTILS.THUMBNAIL -->
+		<thumbnailator.version>0.4.6</thumbnailator.version>
+
+		<!-- XML -->
+		<dom4j.version>1.6.1</dom4j.version>
+		<jaxen.version>1.1.4</jaxen.version>
+
+		<!-- PLUS -->
+		<activemq.version>5.7.0</activemq.version>
 		<quartz.version>2.2.1</quartz.version>
+		<jedis.version>2.2.1</jedis.version>
+		<spymemcached.version>2.10.2</spymemcached.version>
+
+		<!-- SECURITY -->
+		<shiro.version>1.2.2</shiro.version>
 
 		<!-- WEB -->
 		<servlet-api.version>2.5</servlet-api.version>
 		<jsp-api.version>2.2</jsp-api.version>
 		<jstl.version>1.2</jstl.version>
-		<urlrewritefilter.version>4.0.4</urlrewritefilter.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
-		<shiro.version>1.2.2</shiro.version>
-		<thumbnailator.version>0.4.6</thumbnailator.version>
+		<urlrewritefilter.version>4.0.4</urlrewritefilter.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
 
 		<!-- DB DRIVER -->
 		<h2.version>1.3.174</h2.version>
 		<mysql-connector-java.version>5.1.27</mysql-connector-java.version>
 		<ojdbc6.version>12.1.0.1.0</ojdbc6.version>
+		<sqljdbc4.version>4.0</sqljdbc4.version>
 
 		<!-- DB POOL -->
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<tomcat-jdbc.version>7.0.47</tomcat-jdbc.version>
-		<druid.version>1.0.0</druid.version>
+		<druid.version>1.0.1</druid.version>
 
+		<!-- !NOT CONFIGED -->
 		<cxf.version>2.7.5</cxf.version>
-		<activemq.version>5.7.0</activemq.version>
-		<jedis.version>2.1.0</jedis.version>
-		<spymemcached.version>2.9.1</spymemcached.version>
-
-		<jolokia.version>1.1.2</jolokia.version>
-		<mockito.version>1.9.5</mockito.version>
-		<powermock.version>1.5.1</powermock.version>
-		<selenium.version>2.33.0</selenium.version>
 		<jetty.version>7.6.11.v20130520</jetty.version>
 
 		<!-- MAVEN PLUGINS -->
@@ -181,21 +194,26 @@
 		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
 		<maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
 
+		<maven-release-plugin.version>2.4.2</maven-release-plugin.version>
 		<maven-install-plugin.version>2.5.1</maven-install-plugin.version>
 		<maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
+		<maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
 
 		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
 		<maven-shade-plugin.version>2.1</maven-shade-plugin.version>
 		<maven-war-plugin.version>2.4</maven-war-plugin.version>
-		<tomcat7-maven-plugin.version>2.1</tomcat7-maven-plugin.version>
 
 		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
 		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
 		<maven-enforcer-plugin.version>1.3.1</maven-enforcer-plugin.version>
+		<maven-dependency-plugin.version>2.8</maven-dependency-plugin.version>
+		<maven-scm-plugin.version>1.8.1</maven-scm-plugin.version>
 
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jdk.version>1.6</jdk.version>
-		<!-- <java.home>D:\Java\jdk\jdk1.6.0</java.home> -->
+		<tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
+		<jetty-maven-plugin.version>8.1.14.v20131031</jetty-maven-plugin.version>
+
+		<versions-maven-plugin.version>2.1</versions-maven-plugin.version>
+		<sonar-maven-plugin.version>2.0</sonar-maven-plugin.version>
 	</properties>
 
 	<!-- 预定义依赖项的version,scope与exclusions,子项目中只需定义groupId 和 artifactId 即可 -->
@@ -289,8 +307,9 @@
 			<!-- CACHE -->
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>
-				<artifactId>ehcache</artifactId>
+				<artifactId>ehcache-core</artifactId>
 				<version>${ehcache.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>opensymphony</groupId>
@@ -425,6 +444,24 @@
 				<artifactId>joda-time-jsptags</artifactId>
 				<version>${joda-time-jsptags.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-joda</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<!-- UTILS.OBJECT AND COLLECTIONS -->
+			<dependency>
+				<groupId>net.sf.dozer</groupId>
+				<artifactId>dozer</artifactId>
+				<version>${dozer.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 
 			<!-- UTILS.MAIL -->
 			<dependency>
@@ -433,12 +470,97 @@
 				<version>${mail.version}</version>
 			</dependency>
 
-			<!-- UTILS.SCHEDULER -->
+			<!-- UTILS.JSON -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.module</groupId>
+				<artifactId>jackson-module-jaxb-annotations</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+
+			<!-- XML -->
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>${dom4j.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>jaxen</groupId>
+				<artifactId>jaxen</artifactId>
+				<version>${jaxen.version}</version>
+			</dependency>
+
+			<!-- JMS -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jms</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-core</artifactId>
+				<version>${activemq.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.apache.activemq.protobuf</groupId>
+						<artifactId>activemq-protobuf</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.springframework.osgi</groupId>
+						<artifactId>spring-osgi-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.osgi</groupId>
+						<artifactId>org.osgi.core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.fusesource.mqtt-client</groupId>
+						<artifactId>mqtt-client</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- TIMER -->
 			<dependency>
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz</artifactId>
 				<version>${quartz.version}</version>
-				<scope>runtime</scope>
+			</dependency>
+
+			<!-- NOSQL -->
+			<dependency>
+				<groupId>redis.clients</groupId>
+				<artifactId>jedis</artifactId>
+				<version>${jedis.version}</version>
+			</dependency>
+			<!-- NOSQL end -->
+
+			<!-- MEM CACHE -->
+			<dependency>
+				<groupId>net.spy</groupId>
+				<artifactId>spymemcached</artifactId>
+				<version>${spymemcached.version}</version>
 			</dependency>
 
 			<!-- WEB -->
@@ -505,6 +627,13 @@
 				<groupId>com.oracle</groupId>
 				<artifactId>ojdbc6</artifactId>
 				<version>${ojdbc6.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.microsoft.sqlserver</groupId>
+				<artifactId>sqljdbc4</artifactId>
+				<version>${sqljdbc4.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 
 			<!-- DB POOL -->
@@ -563,8 +692,14 @@
 		<!-- RUNTIME -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectjweaver.version}</version>
+			<version>${aspectj.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -594,6 +729,13 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
+		</dependency>
+
+		<!-- UTILS.OBJECT AND COLLECTIONS -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
 		</dependency>
 
 		<!-- LOGS -->
@@ -683,18 +825,9 @@
 		</dependency>
 	</dependencies>
 
-	<prerequisites>
-		<maven>2.2.1</maven>
-	</prerequisites>
-
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>${maven-jar-plugin.version}</version>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-shade-plugin</artifactId>
@@ -725,37 +858,124 @@
 						</execution>
 					</executions>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>${maven-war-plugin.version}</version>
-					<configuration>
-						<warName>${project.artifactId}</warName>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.tomcat.maven</groupId>
-					<artifactId>tomcat7-maven-plugin</artifactId>
-					<version>${tomcat7-maven-plugin.version}</version>
-					<!-- http://tomcat.apache.org/maven-plugin-2.1/run-mojo-features.html -->
-					<!-- http://mojo.codehaus.org/tomcat-maven-plugin/run-mojo.html -->
-					<configuration>
-						<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
-						<contextReloadable>true</contextReloadable>
-						<systemProperties>
-							<spring.profiles.default>test</spring.profiles.default>
-							<JAVA_OPTS>-Xms1024m -Xmx2048m -XX:MaxPermSize=256m</JAVA_OPTS>
-						</systemProperties>
-						<!-- if you want to use test dependencies rather than only runtime -->
-						<useTestClasspath>true</useTestClasspath>
-					</configuration>
-				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>${maven-antrun-plugin.version}</version>
 				</plugin>
+
+				<plugin>
+					<groupId>org.mortbay.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>${jetty-maven-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>${maven-dependency-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${maven-assembly-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>${sonar-maven-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${maven-release-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>${maven-scm-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${versions-maven-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>${maven-install-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${maven-deploy-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>${maven-clean-plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>${maven-eclipse-plugin.version}</version>
+					<configuration>
+						<sourceExcludes>
+							<sourceExclude>**/.svn/</sourceExclude>
+						</sourceExcludes>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>false</downloadJavadocs>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven-resources-plugin.version}</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin.version}</version>
+					<configuration>
+						<show>private</show>
+						<nohelp>true</nohelp>
+						<aggregate>true</aggregate>
+						<charset>${project.build.sourceEncoding}</charset>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<docencoding>${project.build.sourceEncoding}</docencoding>
+					</configuration>
+				</plugin>
+
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire-plugin.version}</version>
+					<configuration>
+						<includes>
+							<include>**/*AllTests.java</include>
+						</includes>
+						<excludes>
+							<exclude>**/*Test.java</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+
 			</plugins>
 		</pluginManagement>
 
@@ -769,6 +989,7 @@
 					<source>${jdk.version}</source>
 					<target>${jdk.version}</target>
 					<encoding>${project.build.sourceEncoding}</encoding>
+					<showWarnings>true</showWarnings>
 					<!-- 程序包com.sun.image.codec.jpeg不存在 问题的完美解决 -->
 					<!-- <compilerArguments> -->
 					<!-- <verbose /> -->
@@ -776,48 +997,46 @@
 					<!-- </compilerArguments> -->
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>${maven-resources-plugin.version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven-javadoc-plugin.version}</version>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
 				<configuration>
-					<show>private</show>
-					<nohelp>true</nohelp>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>${maven-clean-plugin.version}</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven-surefire-plugin.version}</version>
-				<configuration>
-					<includes>
-						<include>**/*AllTests.java</include>
-					</includes>
-					<excludes>
-						<exclude>**/*Test.java</exclude>
-					</excludes>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>${maven-install-plugin.version}</version>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+				<configuration>
+					<warName>${project.artifactId}</warName>
+				</configuration>
 			</plugin>
+
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>${maven-deploy-plugin.version}</version>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>${tomcat7-maven-plugin.version}</version>
+				<!-- http://tomcat.apache.org/maven-plugin-2.1/run-mojo-features.html -->
+				<!-- http://mojo.codehaus.org/tomcat-maven-plugin/run-mojo.html -->
+				<configuration>
+					<port>8080</port>
+					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
+					<contextReloadable>true</contextReloadable>
+					<systemProperties>
+						<spring.profiles.default>test</spring.profiles.default>
+					</systemProperties>
+					<!-- if you want to use test dependencies rather than only runtime -->
+					<useTestClasspath>true</useTestClasspath>
+				</configuration>
 			</plugin>
 
 			<!-- enforcer插件, 设定环境与依赖的规则 -->
@@ -857,6 +1076,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 	</build>
 </project>

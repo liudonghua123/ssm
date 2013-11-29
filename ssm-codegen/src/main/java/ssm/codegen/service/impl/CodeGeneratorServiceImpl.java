@@ -22,13 +22,13 @@ import ssm.codegen.service.DatabaseMetaDataService;
 import ssm.core.service.TemplateService;
 
 /**
- * @author Jin,QingHua
- * @version build 2008.12
+ * @author jinqinghua@gmail.com
+ * @version 2013年11月29日 下午9:32:37
  */
 @Service
 public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
-	private final Logger logger = LoggerFactory.getLogger(CodeGeneratorServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Resource
 	private DatabaseMetaDataService databaseMetaDataService;

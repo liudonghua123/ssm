@@ -14,7 +14,7 @@ import ssm.codegen.service.impl.CodeGeneratorServiceImpl;
 
 /**
  * @author jinqinghua@gmail.com
- * @version 2013-11-07
+ * @version 2013年11月29日 下午9:24:07
  */
 public class CodeGenerator {
 
