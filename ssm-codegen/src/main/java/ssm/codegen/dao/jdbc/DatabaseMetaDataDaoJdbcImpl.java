@@ -40,6 +40,16 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 	private DataSource dataSource;
 
 	@Override
+	public String selectJdbcUrl() throws DataAccessException {
+		return (String) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
+			@Override
+			public Object doInConnection(Connection connection) throws SQLException, DataAccessException {
+				return connection.getMetaData().getURL();
+			}
+		});
+	}
+
+	@Override
 	public String selectSchemaPattern() throws DataAccessException {
 		return (String) super.getJdbcTemplate().execute(new ConnectionCallback<Object>() {
 			@Override

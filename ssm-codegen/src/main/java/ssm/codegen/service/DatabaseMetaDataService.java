@@ -10,6 +10,8 @@ import ssm.codegen.domain.Table;
  */
 public interface DatabaseMetaDataService {
 
+	String gettJdbcUrl();
+
 	List<Table> getTables();
 
 }

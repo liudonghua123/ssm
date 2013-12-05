@@ -25,11 +25,8 @@ public class CodeGeneratorConfig {
 	private final String dateFormatStyle = "yyyy-MM-dd HH:mm:ss";
 
 	// ==============================项目类型=============================
-	@Value("${cfg.type.project:Maven}")
+	@Value("${cfg.type.project}")
 	private String projectTypeName;// MAVEN|ECLIPSE
-
-	@Value("${jdbc.url}")
-	private String jdbcUrl;
 
 	@Value("${cfg.path.project}")
 	private String projectPathName; // 项目根目录（生成文件的目录）
@@ -148,9 +145,9 @@ public class CodeGeneratorConfig {
 	 * 根据数据库类型(从jdbc.url获取)获取不同数据库模板ftl文件的位置
 	 * 
 	 */
-	public String getFtlFilePathName(String ftlFileName) {
+	public String getFtlFilePathName(String jdbcUrl, String ftlFileName) {
 		for (DbType dbType : DbType.values()) {
-			if (this.jdbcUrl.toLowerCase().startsWith("jdbc:" + dbType.getDbmsPorductName().toLowerCase())) {
+			if (jdbcUrl.toLowerCase().startsWith("jdbc:" + dbType.getDbmsPorductName().toLowerCase())) {
 				return dbType.getDbmsPorductName().toLowerCase().concat("/").concat(ftlFileName);
 			}
 		}

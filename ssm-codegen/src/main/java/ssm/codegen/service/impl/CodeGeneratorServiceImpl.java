@@ -163,7 +163,8 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 			File file = new File(cfg.convertPackageNameToPath(cfg.getProjectResourcePath(),
 					cfg.getDaoMyBatisMapperPackageName()), convertFtlToFile(FTL_DAO_MYBATIS_MAPPER,
 					table.getDomainClassName()));
-			String content = templateService.getContent(cfg.getFtlFilePathName(FTL_DAO_MYBATIS_MAPPER), model);
+			String content = templateService.getContent(
+					cfg.getFtlFilePathName(databaseMetaDataService.gettJdbcUrl(), FTL_DAO_MYBATIS_MAPPER), model);
 			this.generateFile(file, content, false);
 		}
 	}

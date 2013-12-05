@@ -29,6 +29,11 @@ public class DatabaseMetaDataServiceImpl implements DatabaseMetaDataService {
 	private DatabaseMetaDataDao databaseMetaDataDao;
 
 	@Override
+	public String gettJdbcUrl() {
+		return databaseMetaDataDao.selectJdbcUrl();
+	}
+
+	@Override
 	public List<Table> getTables() {
 		String schemaPattern = databaseMetaDataDao.selectSchemaPattern();
 		List<Table> tables = databaseMetaDataDao.selectTables(schemaPattern);

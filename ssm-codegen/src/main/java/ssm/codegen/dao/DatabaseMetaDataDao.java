@@ -16,6 +16,8 @@ import ssm.codegen.domain.Table;
  */
 public interface DatabaseMetaDataDao {
 
+	String selectJdbcUrl() throws DataAccessException;
+
 	String selectSchemaPattern() throws DataAccessException;
 
 	List<Table> selectTables(String schemaPattern) throws DataAccessException;
