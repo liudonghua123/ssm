@@ -24,7 +24,7 @@
 		<!--context:include-filter type="regex" expression="ssm\.codegen\.service\..*" / -->
 	</context:component-scan>
 
-	<import resource="classpath:spring-template.xml" />
+	<import resource="classpath:applicationTemplate.xml" />
 
 	<context:property-placeholder location="cfg.properties" />
 

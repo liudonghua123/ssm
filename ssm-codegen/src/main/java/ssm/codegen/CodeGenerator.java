@@ -17,13 +17,16 @@ import ssm.codegen.service.impl.CodeGeneratorServiceImpl;
  * @version 2013年11月29日 下午9:24:07
  */
 public class CodeGenerator {
+	private static final Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
+	private static final GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
+	private static String profile = "production";
 
 	public static void main(String[] args) throws IOException {
-		final Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
-
-		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
-		ctx.getEnvironment().setActiveProfiles("production"); // setting profile
-		ctx.load("classpath:spring-context.xml");
+		if (null != args && args.length > 0) {
+			profile = args[0];
+		}
+		ctx.getEnvironment().setActiveProfiles(profile);
+		ctx.load("classpath:applicationContext.xml");
 		ctx.refresh();
 
 		String[] beanNames = ctx.getBeanDefinitionNames();
