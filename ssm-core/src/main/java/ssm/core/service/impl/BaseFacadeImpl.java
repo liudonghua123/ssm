@@ -10,30 +10,30 @@ import ssm.core.service.TemplateService;
  */
 public class BaseFacadeImpl implements BaseFacade {
 
-	private MailService mailService;
+    private MailService mailService;
 
-	private TemplateService templateService;
+    private TemplateService templateService;
 
-	public BaseFacadeImpl() {
+    public BaseFacadeImpl() {
 
-	}
+    }
 
-	@Override
-	public MailService getMailService() {
-		return mailService;
-	}
+    @Override
+    public MailService getMailService() {
+        return mailService;
+    }
 
-	public void setMailService(MailService mailService) {
-		this.mailService = mailService;
-	}
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
 
-	@Override
-	public TemplateService getTemplateService() {
-		return templateService;
-	}
+    @Override
+    public TemplateService getTemplateService() {
+        return templateService;
+    }
 
-	public void setTemplateService(TemplateService templateService) {
-		this.templateService = templateService;
-	}
+    public void setTemplateService(TemplateService templateService) {
+        this.templateService = templateService;
+    }
 
 }
