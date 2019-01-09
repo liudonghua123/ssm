@@ -17,6 +17,10 @@ public class FileUploadUtils {
     private static final String UPLOAD_DATE_PATH = "yyyy/MM/dd/";
     private static final Logger logger = LoggerFactory.getLogger(FileUploadUtils.class);
 
+    private FileUploadUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     public static String getUploadFileFullSavePath(ServletContext context) throws FileNotFoundException {
         return FileUploadUtils.getServletContextPath(context) + FileUploadUtils.getUploadFileSavePath(context);
     }

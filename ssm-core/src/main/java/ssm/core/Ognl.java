@@ -14,6 +14,10 @@ import java.util.Map;
  */
 public class Ognl {
 
+    private Ognl() {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * 判断 Map, Collection, String, Array 是否为空.
      *
@@ -21,7 +25,7 @@ public class Ognl {
      * @return true 如果为空
      * @throws IllegalArgumentException
      */
-    public static boolean isEmpty(Object o) throws IllegalArgumentException {
+    public static boolean isEmpty(Object o) {
         if (o == null) {
             return true;
         }

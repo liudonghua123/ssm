@@ -15,9 +15,11 @@ import java.util.UUID;
  * @version 2012/08/04
  */
 public class FileNamingUtils {
-    // private static final Logger logger =
-    // LoggerFactory.getLogger(FileNamingUtils.class);
     private static final String FILE_NAME_PATTERN = "%s.%s";
+
+    private FileNamingUtils() {
+        throw new UnsupportedOperationException();
+    }
 
     public static String getFileName(String originalFilename, FileNaming fileNaming) {
         String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();

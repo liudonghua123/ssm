@@ -1,8 +1,8 @@
 package ssm.codegen.service;
 
-import java.util.List;
-
 import ssm.codegen.domain.Table;
+
+import java.util.List;
 
 /**
  * @author jinqinghua@gmail.com
@@ -10,8 +10,8 @@ import ssm.codegen.domain.Table;
  */
 public interface DatabaseMetaDataService {
 
-	String gettJdbcUrl();
+    String getJdbcUrl();
 
-	List<Table> getTables();
+    List<Table> getTables();
 
 }

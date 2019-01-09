@@ -33,7 +33,7 @@ public class SimpleAuthenticateFilter extends OncePerRequestFilter {
     }
 
     private boolean isAuthenticated(HttpServletRequest request, String key) {
-        return null == WebUtils.getSessionAttribute(request, key) ? false : true;
+        return null != WebUtils.getSessionAttribute(request, key);
     }
 
     public String getSessionKey() {

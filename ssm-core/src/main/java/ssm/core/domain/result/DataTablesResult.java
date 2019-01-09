@@ -7,13 +7,13 @@ public class DataTablesResult {
     private int draw;
     private long recordsTotal;
     private long recordsFiltered;
-    private List<?> data;
+    private List<Object> data;
 
     public DataTablesResult() {
         super();
     }
 
-    public DataTablesResult(int draw, long recordsTotal, long recordsFiltered, List<?> data) {
+    public DataTablesResult(int draw, long recordsTotal, long recordsFiltered, List<Object> data) {
         super();
         this.draw = draw;
         this.recordsTotal = recordsTotal;
@@ -45,11 +45,11 @@ public class DataTablesResult {
         this.recordsFiltered = recordsFiltered;
     }
 
-    public List<?> getData() {
+    public List<Object> getData() {
         return data;
     }
 
-    public void setData(List<?> data) {
+    public void setData(List<Object> data) {
         this.data = data;
     }
 

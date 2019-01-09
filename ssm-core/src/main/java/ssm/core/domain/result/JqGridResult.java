@@ -6,14 +6,14 @@ public class JqGridResult {
 
     private int page;
     private long records;
-    private List<?> data;
+    private List<Object> data;
     private long total;
 
     public JqGridResult() {
         super();
     }
 
-    public JqGridResult(int page, long records, long total, List<?> data) {
+    public JqGridResult(int page, long records, long total, List<Object> data) {
         super();
         this.page = page;
         this.records = records;
@@ -37,11 +37,11 @@ public class JqGridResult {
         this.records = records;
     }
 
-    public List<?> getData() {
+    public List<Object> getData() {
         return data;
     }
 
-    public void setData(List<?> data) {
+    public void setData(List<Object> data) {
         this.data = data;
     }
 

@@ -1,7 +1,6 @@
 package ssm.core.dao.impl;
 
 import org.mybatis.spring.support.SqlSessionDaoSupport;
-import org.springframework.dao.DataAccessException;
 import ssm.core.dao.EntityDao;
 
 import java.util.List;
@@ -21,40 +20,35 @@ public class EntityDaoSqlSessionImpl<T> extends SqlSessionDaoSupport implements 
     private String statement;
 
     public EntityDaoSqlSessionImpl() {
+        // Do nothing
     }
 
-    @Override
-    public int insertEntity(T t) throws DataAccessException {
+    public int insertEntity(T t) {
         statement = String.format(INSERT_PATTERN, t.getClass().getSimpleName());
         return super.getSqlSession().insert(statement, t);
     }
 
-    @Override
-    public int updateEntity(T t) throws DataAccessException {
+    public int updateEntity(T t) {
         statement = String.format(UPDATE_PATTERN, t.getClass().getSimpleName());
         return super.getSqlSession().update(statement, t);
     }
 
-    @Override
-    public int deleteEntity(T t) throws DataAccessException {
+    public int deleteEntity(T t) {
         statement = String.format(DELETE_PATTERN, t.getClass().getSimpleName());
         return super.getSqlSession().delete(statement, t);
     }
 
-    @Override
-    public T selectEntity(T t) throws DataAccessException {
+    public T selectEntity(T t) {
         statement = String.format(SELECT_PATTERN, t.getClass().getSimpleName());
         return super.getSqlSession().selectOne(statement, t);
     }
 
-    @Override
-    public Long selectEntityCount(T t) throws DataAccessException {
+    public Long selectEntityCount(T t) {
         statement = String.format(SELECT_COUNT_PATTERN, t.getClass().getSimpleName());
-        return (Long) super.getSqlSession().selectOne(statement, t);
+        return super.getSqlSession().selectOne(statement, t);
     }
 
-    @Override
-    public List<T> selectEntityList(T t) throws DataAccessException {
+    public List<T> selectEntityList(T t) {
         statement = String.format(SELECT_LIST_PATTERN, t.getClass().getSimpleName());
         return super.getSqlSession().selectList(statement, t);
     }

@@ -24,7 +24,7 @@ public class MailServiceDefaultImpl implements MailService {
     private TemplateService templateService;
 
     public MailServiceDefaultImpl() {
-
+        // Do nothing
     }
 
     public void setMailSender(JavaMailSender mailSender) {
@@ -35,17 +35,14 @@ public class MailServiceDefaultImpl implements MailService {
         this.templateService = templateService;
     }
 
-    @Override
     public void send(SimpleMailMessage simpleMailMessage) {
         mailSender.send(simpleMailMessage);
     }
 
-    @Override
     public void send(SimpleMailMessage mimeMessage, String templateName, Map<String, Object> model) {
         this.send(mimeMessage, templateName, model, "UTF-8");
     }
 
-    @Override
     public void send(SimpleMailMessage mimeMessage, String templateName, Map<String, Object> model, String encoding) {
         String content = templateService.getContent(templateName, model);
         MimeMessage mimeMsg = mailSender.createMimeMessage();

@@ -1,28 +1,26 @@
 package ssm.codegen.dao;
 
-import java.util.List;
-
-import org.springframework.dao.DataAccessException;
-
 import ssm.codegen.domain.Column;
 import ssm.codegen.domain.PrimaryKey;
 import ssm.codegen.domain.Table;
 
+import java.util.List;
+
 /**
  * 数据库元数据信息
- * 
- * @author Jin,QingHua
+ *
+ * @author Jin, QingHua
  * @version build 2008.12
  */
 public interface DatabaseMetaDataDao {
 
-	String selectJdbcUrl() throws DataAccessException;
+    String selectJdbcUrl();
 
-	String selectSchemaPattern() throws DataAccessException;
+    String selectSchemaPattern();
 
-	List<Table> selectTables(String schemaPattern) throws DataAccessException;
+    List<Table> selectTables(String schemaPattern);
 
-	List<PrimaryKey> selectPrimaryKeys(String schemaPattern, String tableName) throws DataAccessException;
+    List<PrimaryKey> selectPrimaryKeys(String schemaPattern, String tableName);
 
-	List<Column> selectColumns(String schemaPattern) throws DataAccessException;
+    List<Column> selectColumns(String schemaPattern);
 }

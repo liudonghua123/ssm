@@ -24,13 +24,11 @@ public class SessionCounterListener implements HttpSessionListener {
         return counter;
     }
 
-    @Override
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
         int[] counter = this.getCounter(httpSessionEvent);
         counter[0]++;
     }
 
-    @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
         int[] counter = this.getCounter(httpSessionEvent);
         counter[0]--;

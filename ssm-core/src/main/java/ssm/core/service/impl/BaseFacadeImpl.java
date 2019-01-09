@@ -15,10 +15,9 @@ public class BaseFacadeImpl implements BaseFacade {
     private TemplateService templateService;
 
     public BaseFacadeImpl() {
-
+        // Do nothing
     }
 
-    @Override
     public MailService getMailService() {
         return mailService;
     }
@@ -27,7 +26,6 @@ public class BaseFacadeImpl implements BaseFacade {
         this.mailService = mailService;
     }
 
-    @Override
     public TemplateService getTemplateService() {
         return templateService;
     }

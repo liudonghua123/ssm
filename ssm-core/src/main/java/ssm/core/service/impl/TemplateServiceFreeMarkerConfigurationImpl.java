@@ -23,14 +23,13 @@ public class TemplateServiceFreeMarkerConfigurationImpl implements TemplateServi
     private Configuration freeMarkerConfiguration;
 
     public TemplateServiceFreeMarkerConfigurationImpl() {
-
+        // Do nothing
     }
 
     public void setFreeMarkerConfiguration(Configuration freeMarkerConfiguration) {
         this.freeMarkerConfiguration = freeMarkerConfiguration;
     }
 
-    @Override
     public String getContent(String templateName, Map<String, Object> model) {
         try {
             Template t = freeMarkerConfiguration.getTemplate(templateName);

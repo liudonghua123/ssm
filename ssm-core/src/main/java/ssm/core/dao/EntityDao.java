@@ -48,41 +48,41 @@ public interface EntityDao<T> {
      * @return 受影响的行数，注意，这个和ibatis2有重大差别
      * @throws DataAccessException
      */
-    int insertEntity(T t) throws DataAccessException;
+    int insertEntity(T t);
 
     /**
      * @param t 实体对象(Domain)
      * @return 受影响的行数
      * @throws DataAccessException
      */
-    int updateEntity(T t) throws DataAccessException;
+    int updateEntity(T t);
 
     /**
      * @param t 实体对象(Domain)
      * @return 受影响的行数
      * @throws DataAccessException
      */
-    int deleteEntity(T t) throws DataAccessException;
+    int deleteEntity(T t);
 
     /**
      * @param t 实体对象(Domain)
      * @return 空或一个实体对象(Domain)
      * @throws DataAccessException
      */
-    T selectEntity(T t) throws DataAccessException;
+    T selectEntity(T t);
 
     /**
      * @param t 实体对象(Domain)
      * @return 查询得到的数量
      * @throws DataAccessException
      */
-    Long selectEntityCount(T t) throws DataAccessException;
+    Long selectEntityCount(T t);
 
     /**
      * @param t 实体对象(Domain)
      * @return 空或一个实体对象(Domain)的集合(List)
      * @throws DataAccessException
      */
-    List<T> selectEntityList(T t) throws DataAccessException;
+    List<T> selectEntityList(T t);
 
 }
