@@ -1,7 +1,6 @@
 package ssm.codegen;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.util.Assert;
 import ssm.codegen.config.CodeGeneratorConfig;
@@ -14,8 +13,8 @@ import java.io.IOException;
  * @author jinqinghua@gmail.com
  * @version 2013年11月29日 下午9:24:07
  */
+@Slf4j
 public class CodeGenerator {
-    private static final Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
     private static final GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
     private static String profile = "production";
 
@@ -29,7 +28,7 @@ public class CodeGenerator {
 
         String[] beanNames = ctx.getBeanDefinitionNames();
         for (String beanName : beanNames) {
-            logger.debug("...................{}", beanName);
+            log.debug("...................{}", beanName);
         }
 
         CodeGeneratorService codeGenerator = ctx.getBean("codeGeneratorServiceImpl", CodeGeneratorServiceImpl.class);
@@ -38,7 +37,7 @@ public class CodeGenerator {
         Assert.notNull(codeGenerator, "CodeGeneratorService should not be null.");
         Assert.notNull(ctx, "ApplicationContext should not be null.");
 
-        logger.debug("begin generate...");
+        log.debug("begin generate...");
         codeGenerator.generateDomainFiles();
         codeGenerator.generateDaoFiles();
         codeGenerator.generateDaoSqlSessionImplFiles();
@@ -49,7 +48,7 @@ public class CodeGenerator {
         codeGenerator.generateServiceImplFiles();
         codeGenerator.generateFacadeFile(true);
         codeGenerator.generateFacadeImplFile(true);
-        logger.debug("end generate...");
+        log.debug("end generate...");
 
         ctx.close(); // close ApplicationContext
 

@@ -1,8 +1,7 @@
 package ssm.codegen.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ssm.codegen.config.CodeGeneratorConfig;
 import ssm.codegen.domain.Table;
@@ -24,15 +23,15 @@ import java.util.Map;
  * @version 2013年11月29日 下午9:32:37
  */
 @SuppressWarnings("ALL")
+@Slf4j
 @Service
 public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
     public static final String TABLES = "tables";
     public static final String NOW = "now";
-    public static final String CONFIG = "config";
+    public static final String CONFIG = "codeGeneratorConfig";
     public static final String TABLE = "table";
     public static final String UUID = "uuid";
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
     private DatabaseMetaDataService databaseMetaDataService;
@@ -41,7 +40,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
     private TemplateService templateService;
 
     @Resource(name = "codeGeneratorConfig")
-    private CodeGeneratorConfig config;
+    private CodeGeneratorConfig codeGeneratorConfig;
 
     private Map<String, Object> model;
 
@@ -57,13 +56,13 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         model = new HashMap<>();
 
         model.put(NOW, new Date());
-        model.put(CONFIG, config);
+        model.put(CONFIG, codeGeneratorConfig);
         model.put(TABLES, databaseMetaDataService.getTables());
     }
 
     private void generateFile(File file, String context, boolean overwrite) throws IOException {
         if (!overwrite && file.exists()) {
-            logger.warn("The file [{}] is already exists!", file.getAbsolutePath());
+            log.warn("The file [{}] is already exists!", file.getAbsolutePath());
             return;
         }
         FileUtils.writeStringToFile(file, context, StandardCharsets.UTF_8);
@@ -80,7 +79,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
     public void generateMyBatisConfigFile(boolean overwrite) throws IOException {
         this.prepareDataModel();
 
-        File file = new File(config.getProjectResourcePath(), convertFtlToFile(FTL_MYBATIS_CONFIG, ""));
+        File file = new File(codeGeneratorConfig.getProjectResourcePath(), convertFtlToFile(FTL_MYBATIS_CONFIG, ""));
         String content = templateService.getContent(FTL_MYBATIS_CONFIG, model);
         this.generateFile(file, content, true);
     }
@@ -92,12 +91,12 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         for (Table table : tables) {
             model.put(TABLE, table);
             model.put(UUID, java.util.UUID.randomUUID().getLeastSignificantBits());// 为domain类增加serialVersionUID
-            File file = new File(config.convertPackageNameToPath(config.getDomainPackageName()), convertFtlToFile(FTL_DOMAIN,
+            File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getDomainPackageName()), convertFtlToFile(FTL_DOMAIN,
                     table.getDomainClassName()));
             String content = templateService.getContent(FTL_DOMAIN, model);
             this.generateFile(file, content, true);
 
-            file = new File(config.convertPackageNameToPath(config.getDomainPackageName() + ".table"), convertFtlToFile(
+            file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getDomainPackageName() + ".table"), convertFtlToFile(
                     FTL_DOMAIN_TABLE, table.getDomainClassName()));
             content = templateService.getContent(FTL_DOMAIN_TABLE, model);
             this.generateFile(file, content, false);
@@ -111,7 +110,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         for (Table table : tables) {
             model.put(TABLE, table);
 
-            File file = new File(config.convertPackageNameToPath(config.getDaoPackageName()), convertFtlToFile(FTL_DAO,
+            File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getDaoPackageName()), convertFtlToFile(FTL_DAO,
                     table.getDomainClassName()));
             String content = templateService.getContent(FTL_DAO, model);
             this.generateFile(file, content, false);
@@ -125,7 +124,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         for (Table table : tables) {
             model.put(TABLE, table);
 
-            File file = new File(config.convertPackageNameToPath(config.getDaoSqlSessionImplPackageName()), convertFtlToFile(
+            File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getDaoSqlSessionImplPackageName()), convertFtlToFile(
                     FTL_DAO_SQLSESSION_IMPL, table.getDomainClassName()));
             String content = templateService.getContent(FTL_DAO_SQLSESSION_IMPL, model);
             this.generateFile(file, content, false);
@@ -139,7 +138,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         for (Table table : tables) {
             model.put(TABLE, table);
 
-            File file = new File(config.convertPackageNameToPath(config.getDaoJdbcImplPackageName()), convertFtlToFile(
+            File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getDaoJdbcImplPackageName()), convertFtlToFile(
                     FTL_DAO_JDBC_IMPL, table.getDomainClassName()));
             String content = templateService.getContent(FTL_DAO_JDBC_IMPL, model);
             this.generateFile(file, content, false);
@@ -153,11 +152,11 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         for (Table table : tables) {
             model.put(TABLE, table);
 
-            File file = new File(config.convertPackageNameToPath(config.getProjectResourcePath(),
-                    config.getDaoMyBatisMapperPackageName()), convertFtlToFile(FTL_DAO_MYBATIS_MAPPER,
+            File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getProjectResourcePath(),
+                    codeGeneratorConfig.getDaoMyBatisMapperPackageName()), convertFtlToFile(FTL_DAO_MYBATIS_MAPPER,
                     table.getDomainClassName()));
             String content = templateService.getContent(
-                    config.getFtlFilePathName(databaseMetaDataService.getJdbcUrl(), FTL_DAO_MYBATIS_MAPPER), model);
+                    codeGeneratorConfig.getFtlFilePathName(databaseMetaDataService.getJdbcUrl(), FTL_DAO_MYBATIS_MAPPER), model);
             this.generateFile(file, content, false);
         }
     }
@@ -169,7 +168,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         for (Table table : tables) {
             model.put(TABLE, table);
 
-            File file = new File(config.convertPackageNameToPath(config.getServicePackageName()), convertFtlToFile(
+            File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getServicePackageName()), convertFtlToFile(
                     FTL_SERVICE, table.getDomainClassName()));
             String content = templateService.getContent(FTL_SERVICE, model);
             this.generateFile(file, content, false);
@@ -183,7 +182,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
         for (Table table : tables) {
             model.put(TABLE, table);
 
-            File file = new File(config.convertPackageNameToPath(config.getServiceImplPackageName()), convertFtlToFile(
+            File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getServiceImplPackageName()), convertFtlToFile(
                     FTL_SERVICE_IMPL, table.getDomainClassName()));
             String content = templateService.getContent(FTL_SERVICE_IMPL, model);
             this.generateFile(file, content, false);
@@ -198,7 +197,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
     public void generateFacadeFile(boolean overwrite) throws IOException {
         this.prepareDataModel();
 
-        File file = new File(config.convertPackageNameToPath(config.getFacadePackageName()), convertFtlToFile(FTL_FACADE, ""));
+        File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getFacadePackageName()), convertFtlToFile(FTL_FACADE, ""));
         String content = templateService.getContent(FTL_FACADE, model);
         this.generateFile(file, content, false);
 
@@ -211,7 +210,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
     public void generateFacadeImplFile(boolean overwrite) throws IOException {
         this.prepareDataModel();
 
-        File file = new File(config.convertPackageNameToPath(config.getFacadeImplPackageName()), convertFtlToFile(
+        File file = new File(codeGeneratorConfig.convertPackageNameToPath(codeGeneratorConfig.getFacadeImplPackageName()), convertFtlToFile(
                 FTL_FACADE_IMPL, ""));
         String content = templateService.getContent(FTL_FACADE_IMPL, model);
         this.generateFile(file, content, false);

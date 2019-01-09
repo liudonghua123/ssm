@@ -1,7 +1,6 @@
 package ssm.codegen.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ssm.codegen.dao.DatabaseMetaDataDao;
 import ssm.codegen.domain.Column;
@@ -16,10 +15,9 @@ import java.util.List;
  * @author jinqinghua@gmail.com
  * @version 2013年11月18日 上午11:06:31
  */
+@Slf4j
 @Service
 public class DatabaseMetaDataServiceImpl implements DatabaseMetaDataService {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Resource
     private DatabaseMetaDataDao databaseMetaDataDao;
 
@@ -48,7 +46,7 @@ public class DatabaseMetaDataServiceImpl implements DatabaseMetaDataService {
                 }
             }
         }
-        logger.debug("----->tables:={}", tables);
+        log.debug("----->tables:={}", tables);
         return tables;
     }
 

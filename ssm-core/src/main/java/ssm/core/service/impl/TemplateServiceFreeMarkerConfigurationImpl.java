@@ -3,8 +3,7 @@ package ssm.core.service.impl;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import ssm.core.service.TemplateService;
 
@@ -16,9 +15,8 @@ import java.util.Map;
  * @author jinqinghua@gmail.com
  * @version 2012/08/04
  */
+@Slf4j
 public class TemplateServiceFreeMarkerConfigurationImpl implements TemplateService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Configuration freeMarkerConfiguration;
 
@@ -35,11 +33,11 @@ public class TemplateServiceFreeMarkerConfigurationImpl implements TemplateServi
             Template t = freeMarkerConfiguration.getTemplate(templateName);
             return FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
         } catch (TemplateException e) {
-            logger.error("Error while processing FreeMarker template ", e);
+            log.error("Error while processing FreeMarker template ", e);
         } catch (FileNotFoundException e) {
-            logger.error("Error while open template file ", e);
+            log.error("Error while open template file ", e);
         } catch (IOException e) {
-            logger.error("IO Exception ", e);
+            log.error("IO Exception ", e);
         }
         return null;
     }

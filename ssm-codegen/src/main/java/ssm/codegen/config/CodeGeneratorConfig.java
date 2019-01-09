@@ -1,8 +1,7 @@
 package ssm.codegen.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ssm.codegen.domain.type.DbType;
@@ -14,10 +13,9 @@ import java.io.File;
  * @author jinqinghua@gmail.com
  * @version 2013年11月29日 下午9:25:18
  */
+@Slf4j
 @Component
 public class CodeGeneratorConfig {
-
-    private static final Logger logger = LoggerFactory.getLogger(CodeGeneratorConfig.class);
 
     // ==============================固定配置==============================
     private static final String AUTHOR = "jinqinghua@gmail.com";
@@ -86,7 +84,7 @@ public class CodeGeneratorConfig {
     private String baseDomainClassName;
 
     public CodeGeneratorConfig() {
-        logger.debug("CodeGeneratorConfig Construct...");
+        log.debug("CodeGeneratorConfig Construct...");
     }
 
     /**

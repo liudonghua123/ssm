@@ -1,9 +1,8 @@
 package ssm.core.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletContext;
@@ -11,11 +10,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
 
+@Slf4j
 public class FileUploadUtils {
     public static final String UPLOAD_FILE_SEPARATOR = "/";
     private static final String UPLOAD_PATH = "files/upload/";
     private static final String UPLOAD_DATE_PATH = "yyyy/MM/dd/";
-    private static final Logger logger = LoggerFactory.getLogger(FileUploadUtils.class);
 
     private FileUploadUtils() {
         throw new UnsupportedOperationException();
@@ -40,7 +39,7 @@ public class FileUploadUtils {
 
     public static String getServletContextPath(ServletContext context) throws FileNotFoundException {
         String ctxPath = WebUtils.getRealPath(context, File.separator);
-        logger.debug("...servletContext.getRealPath({}):={}", File.separator, ctxPath);
+        log.debug("...servletContext.getRealPath({}):={}", File.separator, ctxPath);
         if (!ctxPath.endsWith(File.separator)) {
             ctxPath = ctxPath + File.separator;
         }

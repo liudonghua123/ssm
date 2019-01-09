@@ -1,20 +1,20 @@
 package test.java.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
+@Slf4j
 public class UUIDTest {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Test
     public void test() {
-        System.out.println(UUID.randomUUID().getLeastSignificantBits());
-        System.out.println(UUID.randomUUID().getMostSignificantBits());
-        logger.debug(UUID.randomUUID().toString());
+        if (log.isDebugEnabled()) {
+            log.debug("{}", UUID.randomUUID().getLeastSignificantBits());
+            log.debug("{}", UUID.randomUUID().getMostSignificantBits());
+            log.debug("{}", UUID.randomUUID().toString());
+        }
     }
 
 }

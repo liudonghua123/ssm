@@ -1,7 +1,6 @@
 package ssm.core.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,9 +14,8 @@ import java.util.Map;
  * @author jinqinghua@gmail.com
  * @version 2012/08/04
  */
+@Slf4j
 public class MailServiceDefaultImpl implements MailService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private JavaMailSender mailSender;
 
@@ -54,7 +52,7 @@ public class MailServiceDefaultImpl implements MailService {
             helper.setText(content, true);
             mailSender.send(mimeMsg);
         } catch (Exception ex) {
-            logger.error(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
     }
 }

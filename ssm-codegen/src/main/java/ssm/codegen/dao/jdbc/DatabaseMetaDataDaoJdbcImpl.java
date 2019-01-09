@@ -1,7 +1,6 @@
 package ssm.codegen.dao.jdbc;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
@@ -29,13 +28,14 @@ import java.util.Objects;
  * @author jinqinghua@gmail.com
  * @version 2013年11月18日 下午4:50:33
  */
+@Slf4j
 @Repository
 public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements DatabaseMetaDataDao {
 
     public static final String TABLE_SCHEM = "TABLE_SCHEM";
     public static final String TABLE_NAME = "TABLE_NAME";
     public static final String REMARKS = "REMARKS";
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    public static final String RESULT_SET_SHOULD_NOT_BE_NULL = "ResultSet should not be null";
 
     @Resource
     private DataSource dataSource;
@@ -80,7 +80,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
             public Object doInConnection(Connection connection) throws SQLException {
                 DatabaseMetaData dbMetaData = connection.getMetaData();
                 ResultSet rst = dbMetaData.getTables(null, schemaPattern, null, new String[]{"TABLE"});
-                Assert.notNull(rst, "ResultSet should not be null");
+                Assert.notNull(rst, RESULT_SET_SHOULD_NOT_BE_NULL);
                 List<Table> tables = new ArrayList<>();
                 while (rst.next()) {
                     Table table = new Table();
@@ -113,7 +113,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
 
                 List<PrimaryKey> primaryKeys = new ArrayList<>();
                 ResultSet primaryKeysResultSet = dbMetaData.getPrimaryKeys(null, schemaPattern, tableName);
-                Assert.notNull(primaryKeysResultSet, "ResultSet should not be null");
+                Assert.notNull(primaryKeysResultSet, RESULT_SET_SHOULD_NOT_BE_NULL);
                 while (primaryKeysResultSet.next()) {
                     PrimaryKey primaryKey = new PrimaryKey();
                     primaryKey.setTableSchem(primaryKeysResultSet.getString(TABLE_SCHEM));
@@ -140,7 +140,7 @@ public class DatabaseMetaDataDaoJdbcImpl extends JdbcDaoSupport implements Datab
                 DatabaseMetaData dbMetaData = connection.getMetaData();
 
                 ResultSet rsc = dbMetaData.getColumns(null, schemaPattern, null, null);
-                Assert.notNull(rsc, "ResultSet should not be null");
+                Assert.notNull(rsc, RESULT_SET_SHOULD_NOT_BE_NULL);
                 List<Column> columns = new ArrayList<>();
                 while (rsc.next()) {
                     Column column = new Column();
